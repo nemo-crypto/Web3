@@ -1,4 +1,5 @@
 ### 1. 基本初始化对比
+```
 // Web3.js 初始化
 const web3Example = {
   // 通过 HTTP Provider
@@ -28,8 +29,10 @@ const ethersExample = {
     return new ethers.providers.Web3Provider(window.ethereum);
   }
 };
+```
 
 ### 2. 合约交互对比
+```
 // Web3.js 合约交互
 const web3ContractExample = {
   init: (abi, address) => {
@@ -64,8 +67,10 @@ const ethersContractExample = {
     await contract.transfer(to, amount);
   }
 };
+```
 
 ### 3. 工具函数对比
+```
 // Web3.js 工具函数
 const web3Utils = {
   // 单位转换
@@ -102,8 +107,10 @@ const ethersUtils = {
     return ethers.utils.isAddress(address);
   }
 };
+```
 
 ### 4. 主要区别总结
+```
 const differences = {
   // 1. 包大小
   packageSize: {
@@ -157,8 +164,10 @@ const differences = {
     }
   }
 };
+```
 
 ### 5. 实际使用场景对比
+```
 // Web3.js 使用场景
 const web3UsageExample = {
   // 批量请求
@@ -209,6 +218,7 @@ const ethersUsageExample = {
     });
   }
 };
+```
 
 ### 6. 性能对比
 主要性能差异：
