@@ -69,7 +69,7 @@ const ethersContractExample = {
 };
 ```
 
-### 3. 工具函数对比
+### 3. 工具及函数对比
 ```
 // Web3.js 工具函数
 const web3Utils = {
