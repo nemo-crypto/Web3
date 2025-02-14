@@ -1,6 +1,6 @@
 ### 1. 基本初始化对比
 ```
-// Web3.js  初始化
+// Web3.js 初始化
 const web3Example = {
   // 通过 HTTP Provider
   httpProvider: () => {
@@ -69,7 +69,7 @@ const ethersContractExample = {
 };
 ```
 
-### 3. 工具及函数对比
+### 3. 工具类及函数对比
 ```
 // Web3.js 工具函数
 const web3Utils = {
