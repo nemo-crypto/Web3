@@ -222,7 +222,7 @@ const ethersUsageExample = {
 
 ### 6. 性能对比
 主要性能差异：
-1、包大小：
+1、包大小比较：
 - Web3.js: ~1.5MB
 - Ethers.js: ~116.5KB
 2、初始化时间：
