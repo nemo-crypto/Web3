@@ -145,7 +145,7 @@ const differences = {
         "更多的历史项目在使用"
       ],
       disadvantages: [
-        "API 设计不够直观",
+        "API设计上不够直观",
         "包体积较大",
         "类型支持不够完善"
       ]
