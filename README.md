@@ -91,7 +91,7 @@ const web3Utils = {
   }
 };
 
-// Ethers.js 工具函数
+// Ethers.js 工具类函数
 const ethersUtils = {
   // 单位转换
   toWei: (amount) => {
