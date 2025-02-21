@@ -249,7 +249,7 @@ const ethersUsageExample = {
 ```
 // 性能测试示例
 const performanceTest = async () => {
-  // Web3.js 性能测试
+  // Web3.js 性能测试 demo
   const web3Test = async () => {
     const web3 = new Web3(provider);
     console.time('web3');
@@ -263,7 +263,7 @@ const performanceTest = async () => {
     console.timeEnd('web3');
   };
   
-  // Ethers.js 性能测试
+  // Ethers.js 性能测试 demo
   const ethersTest = async () => {
     const provider = new ethers.providers.JsonRpcProvider();
     console.time('ethers');
