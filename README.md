@@ -58,7 +58,7 @@ const ethersContractExample = {
     return new ethers.Contract(address, abi, provider.getSigner());
   },
 
-  // 调用方法
+  // 合约调用方法
   methods: async (contract) => {
     // 读取方法
     const result = await contract.balanceOf(address);
