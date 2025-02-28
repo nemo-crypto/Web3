@@ -263,7 +263,7 @@ const performanceTest = async () => {
     console.timeEnd('web3');
   };
   
-  // Ethers.js 性能测试 demo
+  // Ethers.js 性能测试demo
   const ethersTest = async () => {
     const provider = new ethers.providers.JsonRpcProvider();
     console.time('ethers');
