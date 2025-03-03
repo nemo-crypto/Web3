@@ -40,7 +40,7 @@ const web3ContractExample = {
     return new web3.eth.Contract(abi, address);
   },
 
-  // 调用方法
+  // 方法调用
   methods: async (contract) => {
     // 读取方法
     const result = await contract.methods.balanceOf(address).call();
