@@ -118,7 +118,7 @@ const differences = {
     ethersjs: "116.5KB"  // 更小的包体积
   },
   
-  // 2. API 设计
+  // 2. API设计
   apiDesign: {
     web3js: {
       style: "回调和 Promise 混合",
