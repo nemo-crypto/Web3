@@ -168,7 +168,7 @@ const differences = {
 
 ### 5. 实际使用场景对比
 ```
-// Web3.js 使用场景
+// Web3.js使用场景
 const web3UsageExample = {
   // 批量请求
   batchRequest: async () => {
