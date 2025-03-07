@@ -84,7 +84,7 @@ const web3Utils = {
     return web3.utils.fromWei(amount.toString(), 'ether');
   },
   
-  // 地址检查
+  // 地址检查 
   isAddress: (address) => {
     const web3 = new Web3();
     return web3.utils.isAddress(address);
