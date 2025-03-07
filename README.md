@@ -247,7 +247,7 @@ const ethersUsageExample = {
 - 文档质量
 - 维护活跃度
 ```
-// 性能测试示例
+// 性能测试case
 const performanceTest = async () => {
   // Web3.js 性能测试 demo
   const web3Test = async () => {
