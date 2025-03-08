@@ -91,7 +91,7 @@ const web3Utils = {
   }
 };
 
-// Ethers.js 工具类函数
+// Ethers.js工具类函数
 const ethersUtils = {
   // 单位转换
   toWei: (amount) => {
@@ -102,7 +102,7 @@ const ethersUtils = {
     return ethers.utils.formatEther(amount);
   },
   
-  // 地址检查
+  // 地址检查工具
   isAddress: (address) => {
     return ethers.utils.isAddress(address);
   }
