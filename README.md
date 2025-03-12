@@ -23,7 +23,7 @@ const ethersExample = {
     return new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR-ID');
   },
 
-  // 通过 MetaMask钱包
+  // 通过MetaMask(小狐狸)钱包
   metamask: () => {
     const { ethers } = require('ethers');
     return new ethers.providers.Web3Provider(window.ethereum);
