@@ -136,7 +136,7 @@ const differences = {
     ethersjs: "原生支持，类型定义完善"
   },
   
-  // 4. 功能特点
+  // 4.功能特点
   features: {
     web3js: {
       advantages: [
