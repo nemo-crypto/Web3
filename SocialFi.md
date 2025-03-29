@@ -55,6 +55,7 @@ SocialFi = Social + DeFi
 4. **主要项目类型**
 
 ```plaintext
+
 1. 社交平台
    - Lens Protocol
    - CyberConnect
