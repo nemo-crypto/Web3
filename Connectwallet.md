@@ -66,7 +66,7 @@ export const ConnectWallet = () => {
     <div>
       {active ? (
         <div>
-          <p>已连接账户: {account}</p>
+          <p>已连接: {account}</p>
           <button onClick={disconnect}>断开连接</button>
         </div>
       ) : (
