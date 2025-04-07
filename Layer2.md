@@ -79,6 +79,7 @@ a) **Optimistic Rollup**
 b) **ZK Rollup**
 ```
 核心机制：
+
 1. 零知识证明
    - SNARK
    - STARK
