@@ -7,7 +7,6 @@ const web3Example = {
     const Web3 = require('web3');
     return new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/YOUR-ID'));
   },
-
   // 通过 MetaMask
   metamask: () => {
     const Web3 = require('web3');
