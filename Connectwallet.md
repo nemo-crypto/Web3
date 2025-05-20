@@ -21,7 +21,6 @@ ConnectWallet 是一个用于连接区块链钱包的 React 组件，它提供�
 ## 安装使用
 
 ### 安装依赖
-
 ```bash
 # 使用 npm
 npm install @web3-react/core @web3-react/injected-connector
