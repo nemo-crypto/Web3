@@ -1,4 +1,5 @@
 1. **基本概念**
+   
 ```plaintext
 SocialFi = Social + DeFi
 核心特征：
