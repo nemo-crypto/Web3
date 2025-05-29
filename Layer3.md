@@ -105,6 +105,7 @@ interface ContractSDKInterface {
 ## 开发指南
 
 ### 环境配置
+
 ```typescript
 // 必要的环境变量
 NEXT_PUBLIC_BITX_API_URL
