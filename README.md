@@ -220,6 +220,7 @@ const ethersUsageExample = {
 ```
 
 ### 6. 性能对比
+
 主要性能差异：
 1、包大小比较：
 - Web3.js: ~1.5MB
