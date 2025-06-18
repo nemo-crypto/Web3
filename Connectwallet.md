@@ -37,6 +37,7 @@ export const injected = new InjectedConnector({
 })
 ```
 ## 基本用法
+
 ### 简单示例
 
 ```typescript:src/components/ConnectWallet.tsx
