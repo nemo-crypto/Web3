@@ -11,7 +11,6 @@ SocialFi = Social + DeFi
 ```
 
 2. **主要模式**
-
 ```plaintext
 1. 创作者经济
    - 内容变现
