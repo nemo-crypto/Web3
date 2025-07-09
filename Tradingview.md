@@ -18,6 +18,7 @@ TradingView 是一个功能强大的金融技术分析和社交网络平台，�
 - 指标警报
 - 条件触发警报
 - 支持多种通知方式（邮件、手机推送等）
+  
 ## 使用入门指南
 ### 1. 注册账号
 1. 访问 [TradingView官网](https://www.tradingview.com)
