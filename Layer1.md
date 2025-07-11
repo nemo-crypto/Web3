@@ -34,7 +34,6 @@ Layer1 定义：
    - Sei (SEI)
    - Celestia (TIA)
 ```
-
 3. **核心技术特征**
 
 a) **共识机制**
