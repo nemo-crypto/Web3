@@ -17,7 +17,6 @@ Layer2 定义：
 2. **主要类型**
 
 a) **Rollup 解决方案**
-
 ```
 1. Optimistic Rollup
    - Optimism
