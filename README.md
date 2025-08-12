@@ -29,7 +29,6 @@ const ethersExample = {
   }
 };
 ```
-
 ### 2. 合约交互对比
 ```
 // Web3.js 合约交互
