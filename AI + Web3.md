@@ -27,7 +27,7 @@
     - Alethea AI: 智能NFT平台
     - DeepBrain Chain: AI计算平台
     ```
-
+    
 - **AI 治理**
   - DAO决策辅助
   - 智能投票系统
