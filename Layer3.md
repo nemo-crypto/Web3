@@ -40,7 +40,6 @@ interface ContractSDKInterface {
     // ... 其他合约方法
 }
 ```
-
 ### 2. 服务层
 - 认证服务 (Auth)
 - 订单服务 (Order)
