@@ -28,7 +28,7 @@ npm install @web3-react/core @web3-react/injected-connector
 yarn add @web3-react/core @web3-react/injected-connector
 ```
 ### 基本配置
-
+ 
 ```typescript:src/config/wallet.ts
 import { InjectedConnector } from '@web3-react/injected-connector'
 
