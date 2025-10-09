@@ -17,7 +17,6 @@
     - Ocean Protocol: 数据交易市场
     - Fetch.ai: AI驱动的数据经济
     ```
-
 2. **AI 模型与应用**
 - **AI NFT**
   - AI生成艺术
