@@ -9,7 +9,6 @@ SocialFi = Social + DeFi
 - 社交代币化
 - 去中心化社交网络
 ```
-
 2. **主要模式**
 ```plaintext
 1. 创作者经济
