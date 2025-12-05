@@ -9,7 +9,7 @@ Layer 3 是一个基于区块链技术的预测市场平台，它构建在现有
 - 支持 EVM 兼容链
 - 支持 Solana 网络
 - 可扩展的架构设计，便于添加新的区块链支持
-
+ 
 ### 2. 智能合约集成
 - 条件代币合约 (Conditional Tokens)
 - 代币交换合约 (Token Exchange)
