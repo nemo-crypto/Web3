@@ -3,7 +3,7 @@
 - **去中心化计算**
   - 分布式 AI 训练
   - GPU 算力网络
-  - 代表项目：
+  - 代表项目： 
     ```
     - Render Network (RNDR): GPU渲染算力网络
     - Golem (GLM): 去中心化计算资源市场
