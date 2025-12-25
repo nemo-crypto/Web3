@@ -3,6 +3,7 @@ MPC钱包（Multi-Party Computation Wallet，多方计算钱包）是一种利�
 <img width="834" height="2718" alt="image" src="https://github.com/user-attachments/assets/e0b08d66-4c41-4abc-aa1e-14f16e19f7f7" />
 
 
+
 ### MPC钱包的工作原理
 MPC钱包的核心是将私钥分割成多个部分，每个部分由不同的参与者持有。这些参与者可以是钱包的不同用户，或者是服务提供者的不同服务器。以下是MPC钱包的基本工作流程：
 1. **私钥分割**：在创建钱包时，私钥被分割成多个片段，每个片段由不同的参与者持有。
