@@ -2,7 +2,7 @@
 1. **基本概念**
 ```plaintext
 GameFi = Game + DeFi
-     
+      
 核心特征：
 - Play to Earn (P2E)
 - 资产确权（NFT）
