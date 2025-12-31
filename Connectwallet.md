@@ -1,7 +1,7 @@
 # ConnectWallet 详细指南
 
 ## 简介
-
+ 
 ConnectWallet 是一个用于连接区块链钱包的 React 组件，它提供了一个简单且用户友好的界面，使用户能够轻松地将他们的加密钱包（如 MetaMask、WalletConnect 等）连接到 DApp（去中心化应用）。
 
 ## 功能特点
