@@ -2,7 +2,7 @@ GraphQL实时获取 链上数据
 1. 核心架构与数据流:
 整个过程涉及四个主要角色，它们之间的协作关系如下图所示，清晰地展示了数据从区块链到用户界面的实时流动过程：
 <img width="1241" height="2212" alt="image" src="https://github.com/user-attachments/assets/3f4d7745-05fa-48fa-88ac-e08971638c1c" />
-
+ 
 2. 技术栈选择
 GraphQL 客户端：Apollo Client（行业标准，功能全面） 或 urql（更轻量）。
 HTTP 客户端：@apollo/client 内置。
