@@ -1,7 +1,7 @@
 ### 1. 基本初始化对比
 ```
 // Web3.js初始化
-const web3Example = {
+const web3Example = { 
   // 通过 HTTP Provider
   httpProvider: () => {
     const Web3 = require('web3');
