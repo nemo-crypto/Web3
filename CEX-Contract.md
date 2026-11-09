@@ -1,134 +1,111 @@
-# 全仓合约和逐仓合约的详细对比
-## 基本概念 
- 
-### 全仓合约（Cross Margin）
-- 用户账户中所有可用资金都会用来防止爆仓
-- 所有合约共用整个账户的保证金
-- 风险共担，收益共享 
-  
-### 逐仓合约（Isolated Margin）
-- 每个合约仓位都独立配置保证金
-- 单个仓位的盈亏不会影响其他仓位
-- 风险相对隔离
-  
-## 详细对比
-### 1. 保证金管理
+<a id="top"></a>
 
-#### 全仓-合约
+# CEX 合约：杠杆、保证金、全仓与逐仓
+
+[← 返回学习导航](README.md)
+
+> **学习目标**：区分名义仓位、保证金与盈亏，理解清算为什么可能先于价格回归。
+>
+> **建议先读**：[CEX 现货](CEX-Spot.md)。例子采用线性合约，不能直接套到反向合约。
+
+<details>
+<summary>展开本篇目录</summary>
+
+- [1. 合约与现货的差别](#section-1)
+- [2. 杠杆首先放大的是敞口](#section-2)
+- [3. 全仓与逐仓是保证金模式](#section-3)
+- [4. 清算由哪些因素决定](#section-4)
+- [5. 两个保证金案例](#section-5)
+- [6. 资金费率不是固定利息](#section-6)
+- [7. 自测与参考答案](#section-7)
+- [8. 延伸阅读](#section-8)
+
+</details>
+
+---
+
+
+<a id="section-1"></a>
+
+## 1. 合约与现货的差别
+
+衍生品合约让用户获得某种价格敞口，不必直接持有对应数量的现货。做多通常受益于价格上升，做空通常受益于价格下降。
+
+交割合约有到期结算规则；永续合约没有固定到期日，常通过资金费率等机制约束价格偏离。永续价格与现货价格接近，不代表两者每一刻都相等。
+
+<a id="section-2"></a>
+
+## 2. 杠杆首先放大的是敞口
+
+假设用 100 单位保证金建立 1,000 单位名义仓位，初始杠杆为 10 倍。若价格反向变动 5%，在简化线性模型中损失约为 50，即初始保证金的一半。
+
 ```text
-总保证金 = 账户所有可用资金
-维持保证金率 = 总保证金 / 所有持仓价值
-```
-#### 逐仓-合约
-```text
-单个仓位保证金 = 指定分配的保证金
-维持保证金率 = 单个仓位保证金 / 该仓位持仓价值
-```
-### 2. 风险特点
-
-#### 全仓合约
-- 优点：
-  - 资金利用率高
-  - 可以共享保证金
-  - 不易被单个仓位爆仓
-- 缺点：
-  - 一个仓位亏损会影响其他仓位
-  - 整体风险较大
-  - 难以精确控制单个仓位风险
-    
-#### 逐仓合约
-- 优点：
-  - 风险隔离
-  - 易于管理单个仓位
-  - 损失可控
-- 缺点：
-  - 资金利用率较低
-  - 需要分别管理保证金
-  - 单个仓位容易被爆仓
-### 3. 适用场景
-
-#### 全仓合约适合：
-1. 经验丰富的交易者
-2. 多品种交易策略
-3. 追求高资金利用率
-4. 风险承受能力强的用户
-#### 逐仓合约适合：
-1. 新手交易者
-2. 单一品种交易
-3. 注重风险控制
-4. 保守型投资者
-## 计算示例
-### 1. 全仓合约示例
-```python
-class CrossMarginExample:
-    def __init__(self, total_balance):
-        self.total_balance = total_balance  # 总保证金
-        self.positions = {}  # 所有持仓
-        
-    def calculate_margin_ratio(self):
-        """计算保证金率"""
-        total_position_value = sum(position['value'] for position in self.positions.values())
-        return self.total_balance / total_position_value if total_position_value > 0 else 1
-        
-    def add_position(self, symbol, value):
-        """添加新仓位"""
-        self.positions[symbol] = {'value': value}
-        margin_ratio = self.calculate_margin_ratio()
-        return margin_ratio
+名义仓位 = 数量 × 标记价格
+初始杠杆近似值 = 名义仓位 / 初始保证金
+线性多仓盈亏 = 数量 × (退出价 - 入场价)
+线性空仓盈亏 = 数量 × (入场价 - 退出价)
 ```
 
-### 2. 逐仓合约示例
-```python
-class IsolatedMarginExample:
-    def __init__(self):
-        self.positions = {}  # 所有持仓
-        
-    def add_position(self, symbol, margin, position_value):
-        """添加新仓位"""
-        margin_ratio = margin / position_value
-        self.positions[symbol] = {
-            'margin': margin,
-            'value': position_value,
-            'margin_ratio': margin_ratio
-        }
-        return margin_ratio
-```
+实际收益还要扣除交易费、资金费和其他成本。保证金率、有效杠杆会随权益和价格变化，不是开仓时选完就固定。
 
-## 风险管理建议
-### 1. 全仓合约风险管理
-```python
-class CrossMarginRiskManager:
-    def __init__(self, total_balance, risk_limit):
-        self.total_balance = total_balance
-        self.risk_limit = risk_limit
-        
-    def check_risk(self, positions):
-        """检查风险水平"""
-        total_exposure = sum(position['value'] for position in positions.values())
-        margin_ratio = self.total_balance / total_exposure
-        
-        if margin_ratio < self.risk_limit:
-            return {
-                'status': 'WARNING',
-                'message': f'Margin ratio ({margin_ratio:.2%}) below risk limit ({self.risk_limit:.2%})'
-            }
-        return {'status': 'OK'}
-```
-### 2. 逐仓合约风险管理
-```python
-class IsolatedMarginRiskManager:
-    def __init__(self, min_margin_ratio):
-        self.min_margin_ratio = min_margin_ratio
-        
-    def check_position_risk(self, margin, position_value):
-        """检查单个仓位风险"""
-        margin_ratio = margin / position_value
-        
-        if margin_ratio < self.min_margin_ratio:
-            return {
-                'status': 'WARNING',
-                'message': f'Position margin ratio ({margin_ratio:.2%}) too low'
-            }
-        return {'status': 'OK'}
-```
-  
+<a id="section-3"></a>
+
+## 3. 全仓与逐仓是保证金模式
+
+| 维度 | 全仓 Cross | 逐仓 Isolated |
+| --- | --- | --- |
+| 保证金使用 | 按平台账户体系共享可用担保 | 按仓位或交易对隔离分配 |
+| 风险传播 | 一个仓位可能侵蚀其他仓位缓冲 | 更便于划定单仓资金边界 |
+| 管理重点 | 整体权益与所有敞口 | 单仓保证金与清算距离 |
+| 例外条件 | 多资产折扣、账户划分等 | 自动追加保证金等配置 |
+
+全仓不是默认使用平台里所有账户的一切资产，具体共享范围由账户产品决定。逐仓也不自动适合新手；若杠杆高或开启自动追加，其实际风险仍可能很大。
+
+<a id="section-4"></a>
+
+## 4. 清算由哪些因素决定
+
+初始保证金是开仓要求；维持保证金是维持仓位所需的最低权益要求。把“总保证金 / 持仓价值”直接称为维持保证金率，会混淆平台规则与账户实际指标。
+
+平台可能使用标记价格、分档维持保证金、费用预留和风险限额判断清算。不能用“价格反向走 1/杠杆就一定爆仓”替代实际公式，清算往往可能更早发生。
+
+最新成交价用于展示某笔交易；指数价格来自参考市场；标记价格用于某些估值与风控。止损触发价格类型也可能可选，应核对配置。
+
+<a id="section-5"></a>
+
+## 5. 两个保证金案例
+
+**全仓**：账户权益 1,000，两个仓位分别亏损 300 和 400，剩余权益还要覆盖其他费用和维持要求。即使某个仓位方向看对，另一仓位的损失也可能导致整体风险上升。
+
+**逐仓**：给某仓位分配 100，另有未划入资金 900。该仓位的风险首先由分配的 100 承担；但是否自动补充、如何清算以及其他追偿规则，应按平台协议确认。
+
+比较模式时，最关键的是“最多允许哪个资金池受影响”，而不是只比较哪个更晚爆仓。
+
+<a id="section-6"></a>
+
+## 6. 资金费率不是固定利息
+
+永续合约在特定时点按规则交换资金费。正费率通常表示多头向空头支付，负费率则相反，具体定义以产品为准。
+
+假设结算名义价值 10,000、该期费率 0.01%，则该期资金费约 1。不能把一期费率直接当成每天或每年的固定收益，费率和周期都可能变化。
+
+<a id="section-7"></a>
+
+## 7. 自测与参考答案
+
+**问题**：现货多仓与合约空仓数量相同，为什么合约仍可能被清算？
+
+**答案**：两边经济风险可能部分对冲，但保证金和清算机制可能独立。现货盈利未及时转入合约账户时，空仓仍可能缺少保证金。
+
+**练习**：给一个线性多仓计算价格上涨与下跌 3% 的盈亏，再分别加入双边手续费和一期资金费。
+
+<a id="section-8"></a>
+
+## 8. 延伸阅读
+
+- [现货—合约套利](现货-合约套利.md)、[风险控制与监控](风险控制与监控.md)。
+- [Binance 衍生品 API 文档](https://developers.binance.com/docs/derivatives/Introduction)：清算与保证金定义需对应实际合约类型。
+
+---
+
+[← 返回学习导航](README.md) · [回到顶部](#top)

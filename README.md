@@ -1,280 +1,227 @@
-### 1. 基本初始化对比
-```
-// Web3.js初始化
-const web3Example = { 
-  // 通过 HTTP Provider
-  httpProvider: () => {
-    const Web3 = require('web3');
-    return new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/YOUR-ID'));
-  },
-  // 通过 MetaMask 
-  metamask: () => {
-    const Web3 = require('web3');
-    return new Web3(window.ethereum);
-  }
-};
+# Web3 教学手册
 
-// Ethers.js 初始化
-const ethersExample = {
-  // 通过 HTTP Provider
-  httpProvider: () => {
-    const { ethers } = require('ethers');
-    return new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR-ID');
-  },
+> 从概念理解，到机制推导，再到开发与交易实践。
+>
+> **63 篇专题 · 9 个学习模块 · 中文教学版**
 
-  // 通过MetaMask(小狐狸)钱包
-  metamask: () => {
-    const { ethers } = require('ethers');
-    return new ethers.providers.Web3Provider(window.ethereum);
-  }
-};
-```
-### 2. 合约交互对比
-```
-// Web3.js 合约交互
-const web3ContractExample = {
-  init: (abi, address) => {
-    const web3 = new Web3(window.ethereum);
-    return new web3.eth.Contract(abi, address);
-  },
+这套手册面向希望系统理解 Web3 的初学者，也适合开发者查阅具体概念。每篇围绕“是什么、怎样工作、如何计算或实现、容易错在哪里”展开，并配有自测与参考答案。
 
-  // 方法调用
-  methods: async (contract) => {
-    // 读取方法
-    const result = await contract.methods.balanceOf(address).call();
-    
-    // 写入方法
-    await contract.methods.transfer(to, amount)
-      .send({ from: account });
-  }
-};
-  
-// Ethers.js 合约交互
-const ethersContractExample = {
-  init: (abi, address) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    return new ethers.Contract(address, abi, provider.getSigner());
-  },
+**建议的阅读方式**：先读开头的学习目标和前置知识，再看案例；遇到公式先核对单位，最后尝试不看答案完成练习。无需一次读完整套。
 
-  // 合约调用方法
-  methods: async (contract) => {
-    // 读取方法
-    const result = await contract.balanceOf(address);
-    
-    // 写入方法
-    await contract.transfer(to, amount);
-  }
-};
-```
+**新增专题入口**：[近期 Web3 热点导航](近期Web3热点导航.md)——累计 28 篇补充专题，附选题依据、检索词与资料核验记录。最新一批见 [第三批专题](近期Web3热点导航.md#section-11)。
 
-### 3. 工具类及函数对比
-```
-// Web3.js 工具函数
-const web3Utils = {
-  // 单位转换
-  toWei: (amount) => {
-    const web3 = new Web3();
-    return web3.utils.toWei(amount.toString(), 'ether');
-  },
-  
-  fromWei: (amount) => {
-    const web3 = new Web3();
-    return web3.utils.fromWei(amount.toString(), 'ether');
-  },
-  
-  // 地址检查 
-  isAddress: (address) => {
-    const web3 = new Web3();
-    return web3.utils.isAddress(address);
-  }
-};
+<!-- BEGIN project-discovery -->
+## 项目定位与实践入口
 
-// Ethers.js工具类函数
-const ethersUtils = {
-  // 单位转换
-  toWei: (amount) => {
-    return ethers.utils.parseEther(amount.toString());
-  },
-  
-  fromWei: (amount) => {
-    return ethers.utils.formatEther(amount);
-  },
-  
-  // 地址检查工具
-  isAddress: (address) => {
-    return ethers.utils.isAddress(address);
-  }
-};
-```
+Web3 中文教学手册：Ethereum、钱包开发、Ethers.js、DeFi、AMM、Layer 2、跨链桥与量化策略基础。Blockchain and DApp tutorials with learning paths and exercises.
 
-### 4. 主要区别总结
-```
-const differences = {
-  // 1. 包大小
-  packageSize: {
-    web3js: "1.5MB+",
-    ethersjs: "116.5KB"  // 更小的包体积
-  },
-  
-  // 2. API设计
-  apiDesign: {
-    web3js: {
-      style: "回调和 Promise 混合",
-      example: "contract.methods.method().call()"
-    },
-    ethersjs: {
-      style: "Promise 和 async/await 友好",
-      example: "contract.method()"
-    }
-  },
-  
-  // 3. 类型支持
-  typeScriptSupport: {
-    web3js: "基础支持",
-    ethersjs: "原生支持，类型定义完善"
-  },
-  
-  // 4.功能特点
-  features: {
-    web3js: {
-      advantages: [
-        "更成熟的生态系统",
-        "更多的社区支持",
-        "更多的历史项目在使用"
-      ],
-      disadvantages: [
-        "API设计上不够直观",
-        "包体积较大",
-        "类型支持不够完善"
-      ]
-    },
-    ethersjs: {
-      advantages: [
-        "更现代的API设计",
-        "更小的包体积",
-        "更好的TypeScript支持",
-        "更好的安全性考虑"
-      ],
-      disadvantages: [
-        "社区相对较小",
-        "部分高级功能需要额外配置"
-      ]
-    }
-  }
-};
-```
+适合从以下入口阅读实现与接入条件：
 
-### 5. 实际使用场景对比
-```
-// Web3.js使用场景
-const web3UsageExample = {
-  // 批量请求
-  batchRequest: async () => {
-    const web3 = new Web3(provider);
-    const batch = new web3.BatchRequest();
-    
-    const promises = addresses.map(address => {
-      return new Promise((resolve, reject) => {
-        batch.add(
-          web3.eth.getBalance.request(address, 'latest', (err, balance) => {
-            if (err) reject(err);
-            else resolve(balance);
-          })
-        );
-      });
-    });
-    
-    batch.execute();
-    return Promise.all(promises);
-  },
-  
-  // 事件监听
-  eventListener: (contract) => {
-    contract.events.Transfer({
-      filter: { from: userAddress },
-      fromBlock: 'latest'
-    })
-    .on('data', event => console.log(event))
-    .on('error', error => console.error(error));
-  }
-};
+- [本地教学手册](README.md)
+<!-- END project-discovery -->
 
-// Ethers.js 使用场景
-const ethersUsageExample = {
-  // 批量请求
-  batchRequest: async () => {
-    const provider = new ethers.providers.JsonRpcProvider();
-    return Promise.all(
-      addresses.map(address => provider.getBalance(address))
-    );
-  },
-  
-  // 事件监听
-  eventListener: (contract) => {
-    contract.on('Transfer', (from, to, amount, event) => {
-      console.log({ from, to, amount, event });
-    });
-  }
-};
-```
+## 选择一条学习路线
 
-### 6. 性能对比
+| 你的目标 | 建议顺序 | 学完后应能做到 |
+| --- | --- | --- |
+| 从零理解 Web3 | 公链 → L1 → 钱包 → DeFi → L2 → 跨链桥 | 解释资产在哪里、谁能操作、怎样确认 |
+| 开发 DApp | 钱包分类 → 连接钱包 → SDK → GraphQL → 流动性池 | 分清权限、数据来源和交易生命周期 |
+| 理解链上兑换 | DeFi → 流动性池 → 滑点 → 防夹 → V2 进阶 | 手算报价并说明最低输出的作用 |
+| 研究量化交易 | 现货 → 合约 → 风控 → 对应策略 → 脚本工程 | 分开计算理论收益、执行成本与实际风险 |
+| 阅读应用项目 | 公链 → 对应应用篇 → 相关底层机制 | 画出资产流、权利与收益来源 |
+| 补近期热点 | 热点导航 → 智能体/支付/隐私等专题 → 官方资料 | 分清新规范、应用增长与市场叙事 |
 
-主要性能差异：
-1、包大小比较：
-- Web3.js: ~1.5MB
-- Ethers.js: ~116.5KB
-2、初始化时间：
-- Ethers.js 通常更快
-3、合约调用：
-- 单次调用：差异不大
-- 批量调用：Web3.js 的 BatchRequest 略优
-4、事件监听：
-- Ethers.js 内存占用更少
-- Web3.js 事件处理更灵活
-5、内存使用：
-- Ethers.js 整体内存占用更少
-选择建议：
-- 如果注重：
-- 包大小和加载速度：选择 Ethers.js
-- 批量操作性能：选择 Web3.js
-- 内存占用：选择 Ethers.js
-- TypeScript 支持：选择 Ethers.js
-2. 其他考虑因素：
-- API 设计
-- 社区支持
-- 文档质量
-- 维护活跃度
-```
-// 性能测试case
-const performanceTest = async () => {
-  // Web3.js 性能测试 demo
-  const web3Test = async () => {
-    const web3 = new Web3(provider);
-    console.time('web3');
-    
-    const batch = new web3.BatchRequest();
-    for(let i = 0; i < 100; i++) {
-      batch.add(web3.eth.getBalance.request(address));
-    }
-    await batch.execute();
-    
-    console.timeEnd('web3');
-  };
-  
-  // Ethers.js性能测试demo
-  const ethersTest = async () => {
-    const provider = new ethers.providers.JsonRpcProvider();
-    console.time('ethers');
-    
-    const promises = [];
-    for(let i = 0; i < 100; i++) {
-      promises.push(provider.getBalance(address));
-    }
-    await Promise.all(promises);
-    
-    console.timeEnd('ethers');
-  };
-};
-```
+## 全部专题
 
+### 01 · 基础架构
+
+先理解交易、状态与结算，再比较不同技术路线。
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [公链入门](%E5%85%AC%E9%93%BE.md) | 一笔交易怎样从钱包走到账本 |
+| [Layer 1](Layer1.md) | 执行、共识、结算和数据可用性 |
+| [Layer 2](Layer2.md) | Rollup、侧链、确认与退出 |
+| [Layer 3](Layer3.md) | 专用执行层及多层依赖 |
+| [BTC、ETH、SOL](BTC%E3%80%81ETH%E3%80%81SOL%E7%94%9F%E6%80%81%E5%AF%B9%E6%AF%94.md) | 用一致口径比较架构与业务适配 |
+| [零知识证明](zk.md) | 公开输入、秘密见证和证明边界 |
+| [跨链桥](%E8%B7%A8%E9%93%BE%E6%A1%A5.md) | 资产对应关系、验证与到账状态 |
+
+### 02 · 钱包与开发工具
+
+理解权限，再动手读取数据；示例注明接口或版本边界。
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [钱包分类与开发](%E9%92%B1%E5%8C%85%E5%BC%80%E5%8F%91-%E5%88%86%E7%B1%BB.md) | 控制权、密钥环境和签名机制 |
+| [MPC 钱包](MPC%E9%92%B1%E5%8C%85.md) | 阈值签名、分片、恢复与托管 |
+| [连接钱包](Connectwallet.md) | 连接、登录、授权和交易的区别 |
+| [SDK 与 ethers v6](Web3.js%E4%B8%8Eethers.js.md) | Provider、Signer、ABI 与金额精度 |
+| [GraphQL 与索引](GraphQL.md) | 查询、轮询、断线补查与重组 |
+
+### 03 · DeFi 与交易执行
+
+以同一组 AMM 储备案例，逐步理解报价与保护参数。
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [DeFi 全景](DeFi.md) | 兑换、借贷、稳定币与收益来源 |
+| [流动性池](%E6%B5%81%E5%8A%A8%E6%80%A7%E6%B1%A0.md) | 储备、LP 份额与无常损失 |
+| [滑点](%E6%BB%91%E7%82%B9.md) | 参考价格、成交均价与最低输出 |
+| [防夹基础](%E9%98%B2%E5%A4%B9.md) | 三明治攻击与防护的实际边界 |
+| [Uniswap V2 进阶](%E9%98%B2%E5%A4%B9.Uniswap%20V2%20AMM%20%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%92%8C%E9%98%B2%E5%A4%B9%E7%AD%96%E7%95%A5.md) | 公式推导、整数计算与链上约束 |
+
+### 04 · 应用与资产协议
+
+从实际流程理解业务，不把项目名称或市场叙事当成技术解释。
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [RWA](RWA.md) | 现实资产、法律权利、托管与赎回 |
+| [GameFi](GameFi.md) | 游戏体验、道具与奖励经济 |
+| [SocialFi](SocialFi.md) | 身份、内容与创作者收入 |
+| [AI + Web3](AI%20%2B%20Web3.md) | 算力、数据、验证与智能体权限 |
+| [Four.meme](FourMeme.md) | 发行平台、定价曲线与迁移 |
+| [铭文](%E9%93%AD%E6%96%87.md) | 内容、聪、UTXO 与索引 |
+| [Runes 符文](%E7%AC%A6%E6%96%87.md) | 发行、铸造、分配及与 RUNE 的区别 |
+
+### 05 · 交易基础与分析工具
+
+先看清订单与账户，再理解自动复制和图表信号。
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [CEX 现货](CEX-Spot.md) | 交易对、订单簿、费用与成交状态 |
+| [CEX 合约](CEX-Contract.md) | 杠杆、保证金、全仓与逐仓 |
+| [跟单交易](%E8%B7%9F%E5%8D%95.md) | 复制比例、收益偏差与状态同步 |
+| [TradingView](Tradingview.md) | Pine v6、回测、警报与执行边界 |
+
+### 06 · 量化策略与工程
+
+先读风控，再学习策略；离线计算与真实执行明确分开。
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [风险控制与监控](%E9%A3%8E%E9%99%A9%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%9B%91%E6%8E%A7.md) | 敞口、回撤、异常处理与恢复 |
+| [网格交易](%E7%BD%91%E6%A0%BC%E4%BA%A4%E6%98%93.md) | 价位、库存、配对收益与浮亏 |
+| [跨交易所套利](%E8%B7%A8%E4%BA%A4%E6%98%93%E6%89%80%E5%A5%97%E5%88%A9.md) | 可执行价差、双腿订单与再平衡 |
+| [三角套利](%E4%B8%89%E8%A7%92%E5%A5%97%E5%88%A9.md) | 量纲、买卖方向与三次费用 |
+| [现货—合约套利](%E7%8E%B0%E8%B4%A7-%E5%90%88%E7%BA%A6%E5%A5%97%E5%88%A9.md) | 基差、资金费与保证金风险 |
+| [统计套利](%E7%BB%9F%E8%AE%A1%E5%A5%97%E5%88%A9.md) | 关系检验、样本外验证与成本 |
+| [量化脚本工程](%E5%B8%81%E5%AE%89%E9%87%8F%E5%8C%96%E8%84%9A%E6%9C%AC.md) | 离线信号、订单幂等与对账 |
+
+### 07 · 新协议、热点应用与延伸基础
+
+先读 [热点导航与资料核验](近期Web3热点导航.md)。本模块按学习顺序排列，不是实时搜索热度榜。
+
+**智能体与钱包体验**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [x402 与智能体支付](x402与AI智能体支付.md) | HTTP 402、支付授权、预算与幂等 |
+| [ERC-8004 与 KYA](ERC-8004与智能体身份.md) | Agent 身份、声誉、验证与草案边界 |
+| [账户抽象与 EIP-7702](账户抽象与EIP-7702.md) | UserOperation、Paymaster 与 EOA 委托 |
+| [意图交易与链抽象](意图交易与链抽象.md) | Solver、结果约束和跨链结算 |
+
+**应用与隐私**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [稳定币支付与 PayFi](稳定币支付与PayFi.md) | 收付款、出入金与融资收益 |
+| [预测市场与 Polymarket](预测市场与Polymarket.md) | 结果份额、概率解读与争议裁定 |
+| [Perp DEX 与 Hyperliquid](PerpDEX与Hyperliquid.md) | HyperCore、HyperEVM 与永续交易 |
+| [DePIN](DePIN去中心化物理基础设施.md) | 设备贡献、需求收入和激励闭环 |
+| [隐私计算与 FHE](隐私计算与FHE.md) | 密文计算、解密权限与 ZK/MPC/TEE 对比 |
+
+**基础设施延伸**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [再质押与 LRT](再质押Restaking与LRT.md) | 共享安全、惩罚与退出路径 |
+| [模块化区块链与 DA](模块化区块链与数据可用性DA.md) | 数据可用性、抽样和结算分工 |
+| [BTCFi 与比特币质押](BTCFi与比特币质押.md) | 包装 BTC、借贷、质押与信任依赖 |
+
+### 08 · 智能体商务、可信数据与新应用
+
+本批新增 8 篇，沿用案例、流程图、自测与官方资料结构。查看 [第二批选题与核验记录](近期Web3热点导航.md#section-9) 了解选题边界。
+
+**智能体与可信信息**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [Agentic Commerce 与 AP2](AgenticCommerce与AP2.md) | 购物委托、Checkout / Payment Mandate 与付款证据 |
+| [zkTLS](zkTLS与可验证链下数据.md) | TLS 来源证明、选择性披露与时效 |
+| [真人证明与数字身份](数字身份与真人证明PoP.md) | PoP、World ID、匿名成员与重复参与限制 |
+| [zkVM 与可验证计算](zkVM与可验证计算.md) | 程序身份、输入承诺和执行证明 |
+
+**应用与长期技术路线**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [InfoFi 与注意力市场](InfoFi与注意力市场.md) | Mindshare、贡献评分与激励失真 |
+| [DeSci 与 BioAgents](DeSci与BioAgents.md) | 科研资助、IP 权利、里程碑与 AI 科研助手 |
+| [代币化股票与链上证券](代币化股票与链上证券.md) | 股票权利、价格敞口、托管与公司行动 |
+| [后量子密码与区块链](后量子密码与区块链.md) | 签名算法、ML-DSA 和账户迁移 |
+
+### 09 · 支付链、开放市场与可编程收益
+
+本批新增 8 篇，继续补充具体产品机制与开发边界。查看 [第三批选题与核验记录](近期Web3热点导航.md#section-11)；较新的产品扩展与已有研究方向分别标注，不作为实时搜索榜。
+
+**支付与开放市场**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [稳定币专用链：Tempo 与 Arc](稳定币专用链Tempo与Arc.md) | 支付链的资产、Gas、对账与出金边界 |
+| [HIP-3 与 HIP-4](HIP-3与HIP-4开放衍生品市场.md) | 自建永续市场与有界结果合约的区别 |
+| [Uniswap v4 与 Hooks](UniswapV4与Hooks.md) | 回调扩展、PoolManager 与闪电记账 |
+| [收益代币化与 Pendle](收益代币化与Pendle.md) | SY、PT、YT、到期计价和隐含收益计算 |
+
+**收益、账户与排序**
+
+| 教程 | 你将学到什么 |
+| --- | --- |
+| [ERC-4626 与策展型金库](ERC-4626与策展型金库.md) | 份额净值、管理权限、分配与退出 |
+| [合成美元与收益型稳定币](合成美元与收益型稳定币.md) | USDe / sUSDe、对冲与收益来源 |
+| [Passkey 与嵌入式钱包](Passkey与嵌入式钱包.md) | 登录认证、交易签名、恢复与会话权限 |
+| [Based Rollup 与预确认](BasedRollup与预确认.md) | L1 排序、可验证承诺与最终结算 |
+
+## 贯穿全书的五个问题
+
+1. **状态在哪里？** 是链上状态、交易所账本、索引结果，还是前端缓存？
+2. **谁有权限？** 谁能签名、升级、恢复、冻结或改变执行规则？
+3. **结果何时确定？** 请求受理、广播、首次确认和最终结算不是同一阶段。
+4. **收益由谁支付？** 费用、借款利息、代币发行和价差是不同来源。
+5. **失败怎么办？** 超时、部分成交、断线、重组和单腿失败都有不同恢复路径。
+
+## 常见术语速查
+
+| 术语 | 简明解释 | 对应教程 |
+| --- | --- | --- |
+| RPC | 应用访问节点的调用接口 | [公链](公链.md) |
+| Gas | 对执行资源进行计量的机制 | [Layer1](Layer1.md) |
+| Finality | 按协议判断结果达到最终确定的性质或阶段 | [Layer2](Layer2.md) |
+| UTXO | 尚未花费的交易输出 | [铭文](铭文.md) |
+| AMM | 按规则自动报价的做市机制 | [流动性池](流动性池.md) |
+| LP | 向市场提供流动性的参与者 | [流动性池](流动性池.md) |
+| MEV | 通过包含、排除或排序交易等方式获取的价值 | [防夹](防夹.md) |
+| Slippage | 实际成交相对预期基准的偏差 | [滑点](滑点.md) |
+| Basis | 相关现货与合约价格之间的差异 | [现货—合约套利](现货-合约套利.md) |
+| Drawdown | 权益相对历史高点的下降幅度 | [风险控制与监控](风险控制与监控.md) |
+
+## 示例与资料的使用说明
+
+- **数字是教学假设**：价格、费率、门槛和收益不代表当前市场报价。计算前先确认单位与适用模型。
+- **代码标明范围**：Python 示例以离线计算和状态逻辑为主；JavaScript、GraphQL 与 Pine 示例的运行条件在对应章节说明。它们不是可直接投入实盘的完整系统。
+- **版本要对应**：SDK 教程明确使用 ethers v6；Pine 示例使用 v6。接入其他版本时，应查对应版本的官方资料。
+- **资料需要核验**：各篇提供延伸阅读入口。平台参数、项目权限和 API 能力会变化；本手册不是实时项目状态或费率审计。
+- **阅读器兼容**：文档使用标准 Markdown、表格与 Mermaid。若阅读器不渲染 Mermaid，可结合图旁的步骤说明阅读，或使用支持 Mermaid 的预览工具。
+
+## 推荐的学习成果
+
+完成基础部分后，画一张“钱包 → 节点 → 链 → 索引器 → 界面”的图；完成 DeFi 部分后，用相同储备计算两种交易规模的输出；完成交易部分后，为一笔部分成交订单写出余额与费用变化。
+
+最终目标不是记住项目名单，而是能够对一个新产品说明：它记录什么、信任谁、怎样执行、收益从哪里来，以及异常时如何退出。
+
+---
+
+**整理日期：2026-11-09**。原有专题文件名保留；原 README 中的 SDK 内容已独立整理为 [Web3.js 与 ethers.js](Web3.js与ethers.js.md)。

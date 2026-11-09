@@ -1,221 +1,136 @@
-# ConnectWallet 详细指南
+<a id="top"></a>
 
-## 简介
-  
-ConnectWallet 是一个用于连接区块链钱包的 React 组件，它提供了一个简单且用户友好的界面，使用户能够轻松地将他们的加密钱包（如 MetaMask、WalletConnect 等）连接到 DApp（去中心化应用）。
-  
-## 功能特点
-- 支持多种主流钱包
-  - MetaMask
-  - WalletConnect
-  - Coinbase Wallet
-  - Trust Wallet
-  - 等其他兼容的钱包
-- 自动检测钱包状态
-- 响应式设计
-- 可自定义样式
-- 多链支持
-- 错误处理机制
-   
-## 安装使用
+# Connect Wallet：从连接账户到确认交易
 
-### 安装依赖
-```bash
-# 使用 npm
-npm install @web3-react/core @web3-react/injected-connector
+[← 返回学习导航](README.md)
 
-# 使用 yarn
-yarn add @web3-react/core @web3-react/injected-connector
-```
-### 基本配置
- 
-```typescript:src/config/wallet.ts
-import { InjectedConnector } from '@web3-react/injected-connector'
+> **学习目标**：分清连接、登录、代币授权和交易签名，建立完整的钱包状态管理。
+>
+> **建议先读**：[钱包开发分类](钱包开发-分类.md)。示例采用 EVM 的 EIP-1193 Provider 接口。
 
-export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42] // 支持的链 ID
-})
-```
-## 基本用法
+<details>
+<summary>展开本篇目录</summary>
 
-### 简单示例
+- [1. Connect Wallet 不是一个唯一的库](#section-1)
+- [2. 四种动作必须分开](#section-2)
+- [3. 最小连接示例](#section-3)
+- [4. 状态机比一个布尔值更可靠](#section-4)
+- [5. 错误处理与网络切换](#section-5)
+- [6. 登录与交易的后续流程](#section-6)
+- [7. 自测与参考答案](#section-7)
+- [8. 延伸阅读](#section-8)
 
-```typescript:src/components/ConnectWallet.tsx
-import { useWeb3React } from '@web3-react/core'
-import { injected } from '../config/wallet'
+</details>
 
-export const ConnectWallet = () => {
-  const { active, account, activate, deactivate } = useWeb3React()
+---
 
-  const connect = async () => {
-    try {
-      await activate(injected)
-    } catch (error) {
-      console.log('连接错误:', error)
-    }
+
+<a id="section-1"></a>
+
+## 1. Connect Wallet 不是一个唯一的库
+
+“Connect Wallet”通常是连接钱包的产品动作或按钮名称。项目可以使用连接组件、连接器、钱包 SDK 或标准 Provider 来实现；不能仅凭这个名字确定安装哪个包。
+
+MetaMask 等是钱包产品；WalletConnect 是连接通信生态与协议；EIP-1193 定义以太坊 Provider 的请求和事件接口。它们处在不同层级。
+
+<a id="section-2"></a>
+
+## 2. 四种动作必须分开
+
+| 动作 | 得到什么 | 不代表什么 |
+| --- | --- | --- |
+| 连接账户 | 获准读取钱包暴露的地址 | 不代表登录了后端 |
+| 签名登录 | 后端验证用户控制指定地址 | 不代表可以转走代币 |
+| 代币授权 | spender 获得指定额度的使用权限 | 不代表兑换已经执行 |
+| 签名并发送交易 | 请求一次链上状态变更 | 不代表已成功确认 |
+
+签名也可能授权后续资产操作，例如某些 permit 或订单签名。不能把“没有立即消耗 Gas”解释为“签名没有资金影响”。
+
+<a id="section-3"></a>
+
+## 3. 最小连接示例
+
+下面是浏览器 JavaScript 函数，不依赖 React；`provider` 由应用的钱包发现或连接器层传入。现代多插件环境可使用 EIP-6963 发现多个 Provider，不应默认只有一个 `window.ethereum`。
+
+```javascript
+export async function connectWallet(provider, expectedChainId) {
+  if (!provider || typeof provider.request !== "function") {
+    throw new Error("请选择可用的钱包");
   }
-
-  const disconnect = () => {
-    try {
-      deactivate()
-    } catch (error) {
-      console.log('断开连接错误:', error)
-    }
+  const accounts = await provider.request({ method: "eth_requestAccounts" });
+  const chainId = await provider.request({ method: "eth_chainId" });
+  if (!Array.isArray(accounts) || !accounts[0]) {
+    throw new Error("钱包没有返回可用账户");
   }
-
-  return (
-    <div>
-      {active ? (
-        <div>
-          <p>已连接: {account}</p>
-          <button onClick={disconnect}>断开连接</button>
-        </div>
-      ) : (
-        <button onClick={connect}>连接钱包</button>
-      )}
-    </div>
-  )
+  return {
+    account: accounts[0],
+    chainId,
+    // 例如 0x1 表示 Ethereum 主网；由应用显式传入目标网络。
+    wrongNetwork: BigInt(chainId) !== BigInt(expectedChainId),
+  };
 }
 ```
 
-## 高级配置
-### 自定义钱包选择器
+由用户点击触发权限请求，并在等待期间禁用重复连接按钮。示例只返回连接结果；真正发送交易前仍应重新核对账户和网络。
 
-```typescript:src/components/WalletSelector.tsx
-import { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
+<a id="section-4"></a>
 
-const walletOptions = [
-  {
-    name: 'MetaMask',
-    icon: '/metamask.png',
-    connector: injected
-  },
-  // 添加其他钱包选项
-]
+## 4. 状态机比一个布尔值更可靠
 
-export const WalletSelector = () => {
-  const { activate } = useWeb3React()
-  const [error, setError] = useState<string | null>(null)
-
-  const connectWallet = async (connector: any) => {
-    try {
-      await activate(connector)
-      setError(null)
-    } catch (err) {
-      setError('连接失败，请重试')
-    }
-  }
-
-  return (
-    <div className="wallet-selector">
-      {walletOptions.map((wallet) => (
-        <button
-          key={wallet.name}
-          onClick={() => connectWallet(wallet.connector)}
-        >
-          <img src={wallet.icon} alt={wallet.name} />
-          <span>{wallet.name}</span>
-        </button>
-      ))}
-      {error && <p className="error">{error}</p>}
-    </div>
-  )
-}
+```mermaid
+stateDiagram-v2
+    [*] --> disconnected
+    disconnected --> connecting: 用户点击
+    connecting --> connected: 成功
+    connecting --> disconnected: 拒绝或失败
+    connected --> wrongNetwork: 网络不匹配
+    wrongNetwork --> connected: 切回支持网络
+    connected --> disconnected: 账户为空或会话结束
 ```
 
-### 网络切换功能
-```typescript:src/hooks/useNetwork.ts
-import { useWeb3React } from '@web3-react/core' 
+应用应订阅 `accountsChanged` 和 `chainChanged`，组件卸载时移除监听。账户改变后要失效化旧余额、授权缓存、后端会话和未提交操作，防止把 A 账户的状态用于 B 账户。
 
-export const useNetwork = () => {
-  const { library } = useWeb3React()
+刷新页面时可用 `eth_accounts` 查询已有授权状态；不宜在加载时自动反复触发权限弹窗。`disconnect` 事件描述 Provider 连接状态，也不等于用户撤销了所有站点权限。
 
-  const switchNetwork = async (chainId: number) => {
-    try {
-      await library.provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${chainId.toString(16)}` }]
-      })
-    } catch (error) {
-      console.error('切换网络失败:', error)
-    }
-  }
+<a id="section-5"></a>
 
-  return { switchNetwork }
-}
-```
+## 5. 错误处理与网络切换
 
-## 常见问题
-### 1. 连接失败怎么办？
-- 检查钱包是否已安装
-- 确认浏览器是否支持
-- 检查网络连接是否正常
-- 确认是否在支持的网络上
-### 2. 如何处理网络切换？
-```
-import { useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+| 情况 | 常见含义 | 界面动作 |
+| --- | --- | --- |
+| `4001` | 用户拒绝请求 | 恢复可操作状态，不无限重试 |
+| `-32002` | 某些钱包已有待处理请求 | 提示查看钱包窗口 |
+| 网络不匹配 | 当前链不是业务目标链 | 显示链名称，提供切换入口 |
+| 钱包不认识网络 | 需要添加网络或改用支持网络 | 校验网络配置后再请求 |
+| 移动端跳转后无响应 | 会话或深链可能中断 | 查询会话状态，允许重连 |
 
-export const useNetworkDetector = (targetChainId: number) => {
-  const { chainId, library } = useWeb3React()
+具体错误码还要依据钱包文档。切换可使用钱包支持的 `wallet_switchEthereumChain`；添加链参数必须来自可信配置，不直接接受 URL 中传入的任意 RPC。
 
-  useEffect(() => {
-    if (chainId && chainId !== targetChainId) {
-      // 提示用户切换网络
-      switchNetwork(targetChainId)
-    }
-  }, [chainId])
-}
-```
-### 3. 安全注意事项
-- 始终验证交易信息
-- 使用安全的 RPC 节点
-- 实现适当的错误处理
-- 保护用户私钥和敏感信息
-## 最佳实践
-1. 错误处理
-```typescript
-const handleError = (error: any) => {
-  if (error.code === 4001) {
-    return '用户拒绝连接'
-  }
-  if (error.code === -32002) {
-    return '请检查钱包是否已打开'
-  }
-  return '连接出错，请重试'
-}
-```
+<a id="section-6"></a>
 
-2. 持久化连接
-```typescript
-useEffect(() => {
-  const connectWalletOnPageLoad = async () => {
-    if (localStorage?.getItem('previouslyConnected') === 'true') {
-      try {
-        await activate(injected)
-      } catch (error) {
-        console.error('自动连接失败:', error)
-      }
-    }
-  }
-  connectWalletOnPageLoad()
-}, [])
-```
+## 6. 登录与交易的后续流程
 
-3. 状态管理
-```typescript
-const [connecting, setConnecting] = useState(false)
+签名登录应包含域名、地址、链、一次性 nonce、签发与过期时间等，并由后端验证、消费 nonce。不能仅把前端传来的地址当作登录凭证。
 
-const connect = async () => {
-  setConnecting(true)
-  try {
-    await activate(injected)
-    localStorage.setItem('previouslyConnected', 'true')
-  } catch (error) {
-    console.error(error)
-  } finally {
-    setConnecting(false)
-  }
-}
-```
+交易流程应展示“等待签名 → 已提交 → 等待确认 → 成功或失败”，保存交易哈希，处理取消、替换和超时。断开应用连接不会自动撤销 allowance，也不会取消已广播交易。
+
+<a id="section-7"></a>
+
+## 7. 自测与参考答案
+
+**问题**：用户切换账户后，界面仍显示旧账户余额，可以只改地址文案吗？
+
+**答案**：不可以。应清理或按 `(chainId, account)` 重新获取相关状态，并检查后端认证是否仍匹配。
+
+**练习**：分别验证拒签、重复点击、切链、切账户、刷新恢复和移动端返回六种行为，记录按钮状态与缓存变化。
+
+<a id="section-8"></a>
+
+## 8. 延伸阅读
+
+- [Web3.js 与 ethers.js](Web3.js与ethers.js.md)。
+- [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193)、[EIP-6963](https://eips.ethereum.org/EIPS/eip-6963)、[SIWE / EIP-4361](https://eips.ethereum.org/EIPS/eip-4361)。
+
+---
+
+[← 返回学习导航](README.md) · [回到顶部](#top)

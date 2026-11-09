@@ -1,213 +1,140 @@
-GraphQL实时获取 链上数据
-1. 核心架构与数据流:
-整个过程涉及四个主要角色，它们之间的协作关系如下图所示，清晰地展示了数据从区块链到用户界面的实时流动过程：
-<img width="1241" height="2212" alt="image" src="https://github.com/user-attachments/assets/3f4d7745-05fa-48fa-88ac-e08971638c1c" />
-    
-2. 技术栈选择
-GraphQL 客户端：Apollo Client（行业标准，功能全面） 或 urql（更轻量）。
-HTTP 客户端：@apollo/client 内置。
-WebSocket 客户端：subscriptions-transport-ws（Apollo V2/V3） 或 graphql-ws（Apollo V4+ 推荐）。我们将以最新的 graphql-ws 为例。
-索引服务：The Graph，它为其 Subgraph 提供了开箱即用的订阅支持。
+<a id="top"></a>
 
-3. 具体实现步骤
-步骤一：配置 Apollo Client 并分割链接
-你需要根据操作类型（查询、突变、订阅）来配置不同的网络链接。
+# GraphQL 与链上索引：怎样获取可追溯的数据
+
+[← 返回学习导航](README.md)
+
+> **学习目标**：理解 RPC、索引器和 GraphQL 的分工，避免把“最新返回”当成“链上最终状态”。
+>
+> **建议先读**：[公链](公链.md)、[流动性池](流动性池.md)。
+
+<details>
+<summary>展开本篇目录</summary>
+
+- [1. GraphQL 本身不监听区块链](#section-1)
+- [2. 数据怎样到达界面](#section-2)
+- [3. Query、Mutation、Subscription 分别是什么](#section-3)
+- [4. 一个明确限定 schema 的查询](#section-4)
+- [5. 最小请求代码](#section-5)
+- [6. 如何实现接近实时的更新](#section-6)
+- [7. 自测与参考答案](#section-7)
+- [8. 延伸阅读](#section-8)
+
+</details>
+
+---
+
+
+<a id="section-1"></a>
+
+## 1. GraphQL 本身不监听区块链
+
+GraphQL 是 API 查询语言与执行规范，让客户端按 schema 请求需要的字段。它不是节点、索引器或区块链共识协议。
+
+索引器负责从节点读取区块和日志，按规则转换成查询实体；GraphQL 可以成为这些实体的查询接口。索引延迟、映射错误和链重组都会影响返回数据。
+
+<a id="section-2"></a>
+
+## 2. 数据怎样到达界面
+
+```mermaid
+flowchart LR
+    A[区块与合约日志] --> B[RPC 节点]
+    B --> C[索引器与映射]
+    C --> D[数据库]
+    D --> E[GraphQL API]
+    E --> F[列表与统计界面]
 ```
-// apollo-client.js
-import { ApolloClient, InMemoryCache, split, HttpLink } from '@apollo/client';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 
-// 1. 创建 HTTP 链接用于普通的 Queries 和 Mutations
-const httpLink = new HttpLink({
-  uri: 'https://api.thegraph.com/subgraphs/name/your-subgraph-name' // 替换为你的 Subgraph 地址
-});
+例如工厂合约发出创建池子事件，索引器提取 token 地址、池子地址、区块号和交易哈希，再形成 `Pool` 实体。客户端查询该实体，就不必每次重新扫描所有历史区块。
 
-// 2. 创建 WebSocket 链接用于 Subscriptions
-const wsLink = new GraphQLWsLink(createClient({
-  url: 'wss://api.thegraph.com/subgraphs/name/your-subgraph-name', // WebSocket 地址，通常是 http -> ws
-  connectionParams: () => {
-    // 如果需要认证，可以在这里添加 token
-    return {};
-  },
-}));
+事件存在不代表索引器已处理；接口有结果不代表已达到业务所需最终性。因此页面最好能展示“数据截至哪个区块”，重要操作前再读取权威状态。
 
-// 3. 使用 split 函数根据操作类型定向到不同的链接
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink,
-);
+<a id="section-3"></a>
 
-// 4. 创建 Apollo Client 实例
-const client = new ApolloClient({
-  link: splitLink,
-  cache: new InMemoryCache()
-});
+## 3. Query、Mutation、Subscription 分别是什么
 
-export default client;
-```
-步骤二：在 React 应用中提供 Client
-```
-// index.js
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import { ApolloProvider } from '@apollo/client';
-import client from './apollo-client';
+| 操作 | 用途 | 链上场景中的边界 |
+| --- | --- | --- |
+| Query | 读取服务端暴露的数据 | 读取池列表、统计或历史 |
+| Mutation | 按服务端定义修改数据 | 不天然等于链上交易 |
+| Subscription | 订阅服务端支持的事件流 | 必须有实际 schema 与传输支持 |
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </React.StrictMode>
-);
-```
-步骤三：在组件中使用 Subscription Hook
-假设我们想要实时监听一个新的流动性池被创建的事件。
-```
-// components/NewPoolsListener.js
-import React from 'react';
-import { useSubscription, gql } from '@apollo/client';
+**不能把一个 HTTP 地址改为 WSS 就获得订阅能力。** The Graph 的常见 Subgraph 查询端点应按其提供的查询能力使用，不能默认支持任意 GraphQL subscription。Apollo Client 支持订阅，也不意味着服务端支持。
 
-// 1. 定义你的 GraphQL 订阅
-// 这个查询需要根据你的 Subgraph 模式来编写
-const NEW_POOL_CREATED = gql`
-  subscription OnPoolCreated {
-    poolCreateds(
-      first: 5
-      orderBy: blockTimestamp
-      orderDirection: desc
-    ) {
-      id
-      token0
-      token1
-      pool
-      blockTimestamp
-    }
+<a id="section-4"></a>
+
+## 4. 一个明确限定 schema 的查询
+
+以下是**自定义教学 schema** 的假设查询，不保证任何现成 Subgraph 都有这些字段。接入时先阅读实际 schema，再修改字段与过滤方式。
+
+```graphql
+query PoolsAfter($after: ID!, $first: Int!) {
+  pools(first: $first, orderBy: id, orderDirection: asc,
+        where: { id_gt: $after }) {
+    id
+    token0
+    token1
+    createdAtBlock
   }
-`;
-
-function NewPoolsListener() {
-  // 2. 使用 useSubscription Hook
-  const { data, loading, error } = useSubscription(NEW_POOL_CREATED);
-
-  React.useEffect(() => {
-    if (data) {
-      console.log('监听到新的池子创建:', data.poolCreateds[0]);
-      // 在这里你可以：
-      // - 更新本地状态，触发 UI 重新渲染
-      // - 发出一个通知/toast
-      // - 将新数据追加到一个列表中
-    }
-  }, [data]);
-
-  if (loading) return <div>监听订阅中...</div>;
-  if (error) return <div>订阅错误: {error.message}</div>;
-
-  // 这个组件本身可以不渲染任何内容，或者渲染一个实时通知栏
-  return (
-    <div className="notification">
-      <small>实时监听中... 当有新流动性池创建时，这里会触发更新。</small>
-      {/* 你可以选择性地在这里渲染 data */}
-    </div>
-  );
 }
-
-export default NewPoolsListener;
 ```
-步骤四：与 UI 状态集成（更完整的例子）
-通常，你会将订阅接收到的新数据，合并到现有的本地状态或 Apollo 缓存中。
-```
-// components/PoolList.js
-import React from 'react';
-import { useQuery, useSubscription, gql } from '@apollo/client';
 
-const GET_POOLS = gql`
-  query GetPools {
-    poolCreateds(
-      first: 10
-      orderBy: blockTimestamp
-      orderDirection: desc
-    ) {
-      id
-      token0
-      token1
-      pool
-    }
+假设实体 ID 可按服务定义稳定排序，分页时把最后一个 ID 作为下页游标。全量导出还应固定查询区块快照，否则分页期间新增或重组的数据可能造成遗漏或不一致。
+
+<a id="section-5"></a>
+
+## 5. 最小请求代码
+
+浏览器或支持 `fetch` 的 JavaScript 环境可使用下列函数。端点与鉴权配置由调用方管理，示例不依赖 Apollo，也不包含密钥。
+
+```javascript
+export async function queryGraphQL(endpoint, query, variables, signal) {
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, variables }),
+    signal,
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const payload = await response.json();
+  if (payload.errors?.length) {
+    throw new Error("GraphQL 返回错误，请检查查询与 schema");
   }
-`;
-
-const NEW_POOL_CREATED = gql`
-  subscription OnPoolCreated {
-    poolCreateds(
-      first: 1
-      orderBy: blockTimestamp
-      orderDirection: desc
-    ) {
-      id
-      token0
-      token1
-      pool
-    }
-  }
-`;
-
-function PoolList() {
-  // 1. 首先，用查询获取初始列表
-  const { data, loading, error, subscribeToMore } = useQuery(GET_POOLS);
-
-  // 2. 使用 subscribeToMore 函数将订阅结果更新到查询的缓存中
-  //    这是一种更优雅的方式，可以自动更新列表
-  React.useEffect(() => {
-    const unsubscribe = subscribeToMore({
-      document: NEW_POOL_CREATED,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const newPool = subscriptionData.data.poolCreateds[0];
-
-        // 检查是否已经存在，避免重复
-        if (prev.poolCreateds.find(pool => pool.id === newPool.id)) {
-          return prev;
-        }
-
-        // 将新池子添加到列表的最前面
-        return {
-          ...prev,
-          poolCreateds: [newPool, ...prev.poolCreateds]
-        };
-      }
-    });
-
-    // 清理函数
-    return () => unsubscribe();
-  }, [subscribeToMore]);
-
-  if (loading) return <div>加载中...</div>;
-  if (error) return <div>错误: {error.message}</div>;
-
-  return (
-    <div>
-      <h2>流动性池列表 (实时)</h2>
-      <ul>
-        {data.poolCreateds.map(pool => (
-          <li key={pool.id}>
-            Pool: {pool.pool} (Tokens: {pool.token0} / {pool.token1})
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  if (payload.data == null) throw new Error("查询未返回数据");
+  return payload.data;
 }
-
-export default PoolList;
 ```
+
+GraphQL 可能在 HTTP 200 下返回 `errors`，也可能同时包含部分 `data`。示例选择遇到错误整体失败；如果产品接受部分结果，应明确标注缺失内容。请求取消可通过 `AbortController` 实现。
+
+<a id="section-6"></a>
+
+## 6. 如何实现接近实时的更新
+
+**轮询索引 API**：实现简单，适合列表和统计。控制间隔、失败退避、页面隐藏时暂停，并记录最后处理的区块或游标。
+
+**订阅 RPC 日志**：反馈更快，但断线可能漏事件。重连后从持久化区块号补查，按链 ID、交易哈希和日志索引去重，并处理被重组移除的日志。
+
+**自建推送服务**：后端将索引结果推给客户端，可以使用 WebSocket 或 GraphQL subscription；可靠性仍依赖后端补偿与重放设计。
+
+<a id="section-7"></a>
+
+## 7. 自测与参考答案
+
+**问题**：只轮询 `first: 1` 的最新池子，能保证不漏池吗？
+
+**答案**：不能。两次轮询之间创建多个池子时，中间事件会被跳过。应采用游标、区块范围补查或可重放事件流。
+
+**练习**：设计一次断线 10 分钟后的恢复过程，列出补查起点、去重键和重组处理办法。
+
+<a id="section-8"></a>
+
+## 8. 延伸阅读
+
+- [风险控制与监控](风险控制与监控.md)：数据过期如何阻止错误决策。
+- [GraphQL 官方学习文档](https://graphql.org/learn/)、[The Graph 文档](https://thegraph.com/docs/)。
+
+---
+
+[← 返回学习导航](README.md) · [回到顶部](#top)
