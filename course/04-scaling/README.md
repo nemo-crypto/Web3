@@ -8,6 +8,12 @@
 
 **阶段验收** 能为跨链转账画出源链、消息、目标链与故障处理流程。
 
+## 第一次读这个阶段
+
+1. [Layer 2、Rollup 与退出](01-layer-2.md)
+2. [跨链桥与资产迁移](04-bridges.md)
+3. [Rollup 提现 · 证明、等待与领取](10-rollup-withdrawal-operation.md)
+
 ## 课程目录
 
 | 课程 | 学习成果 |

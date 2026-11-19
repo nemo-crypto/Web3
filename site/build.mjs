@@ -9,6 +9,7 @@ import { labPages } from './labs.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = resolve(root, 'dist');
 const checking = process.argv.includes('--check');
+const visitCounter = process.argv.includes('--visit-counter');
 const markdown = new MarkdownIt({ html: true, linkify: true, typographer: false });
 const catalog = JSON.parse(await readFile(resolve(root, 'course/catalog.json'), 'utf8'));
 const lessonEntries = catalog.flatMap(stage => stage.lessons.map((lesson, index) => ({ ...lesson, stage, index })));
@@ -109,6 +110,12 @@ for (const entry of businessCases) {
   caseIds.add(entry.id);
 }
 if (indexedLessons.size !== lessonEntries.length) errors.push('Duplicate course paths in catalog');
+for (const stage of catalog) {
+  const firstRead = stage.firstRead || [];
+  for (const path of firstRead) {
+    if (!stage.lessons.some(lesson => lesson.path === path)) errors.push(`Invalid first-read lesson for ${stage.id}: ${path}`);
+  }
+}
 for (const lesson of diskLessons) if (!indexedLessons.has(lesson)) errors.push(`Lesson missing from catalog: ${lesson}`);
 for (const { path, stage } of lessonEntries) {
   if (!path.startsWith(`course/${stage.id}/`) || !diskLessons.has(path)) errors.push(`Invalid catalog entry: ${path}`);
@@ -130,7 +137,7 @@ if (errors.length) {
     const stage = stageEntries.find(entry => entry.path === path);
     const lesson = lessonEntries.find(entry => entry.path === path);
     const base = posix.relative(posix.dirname(outputPath(path)), '.') || '.';
-    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc };
+    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, visitCounter };
     const content = path === 'README.md' ? homePage(context) :
       path === 'course/README.md' ? catalogPage(context) :
       path === businessPagePath ? businessPage(context) :

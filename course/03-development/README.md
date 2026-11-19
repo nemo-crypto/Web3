@@ -8,6 +8,12 @@
 
 **阶段验收** 能说明一笔合约写入的状态机，并设计重试和对账测试。
 
+## 第一次读这个阶段
+
+1. [EVM、合约、ABI 与状态](01-evm-and-contracts.md)
+2. [Solidity 与本地合约测试](02-solidity-testing.md)
+3. [JSON-RPC、回执、事件与重组](04-rpc-events-and-reorgs.md)
+
 ## 课程目录
 
 | 课程 | 学习成果 |

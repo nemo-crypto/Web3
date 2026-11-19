@@ -124,4 +124,4 @@ flowchart LR
 
 ---
 
-[上一课 · CEX 合约、保证金与清算](02-cex-derivatives.md) · [下一课 · HIP-3、HIP-4 与开放市场](04-open-derivatives.md)
+[上一课 · CEX 合约业务全流程](02-cex-derivatives.md) · [下一课 · HIP-3、HIP-4 与开放市场](04-open-derivatives.md)

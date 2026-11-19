@@ -159,6 +159,11 @@
         "title": "钱包批量调用 · 多步授权和执行如何组合",
         "summary": "按钱包能力设计组合调用、状态追踪和回退路径"
       }
+    ],
+    "firstRead": [
+      "course/02-wallets/01-wallet-types.md",
+      "course/02-wallets/04-connect-wallet.md",
+      "course/02-wallets/03-signatures-approvals.md"
     ]
   },
   {
@@ -238,6 +243,11 @@
         "title": "事件索引表 · 原始记录、业务读模型与重建",
         "summary": "为链上查询建最小可追溯的数据表和游标"
       }
+    ],
+    "firstRead": [
+      "course/03-development/01-evm-and-contracts.md",
+      "course/03-development/02-solidity-testing.md",
+      "course/03-development/04-rpc-events-and-reorgs.md"
     ]
   },
   {
@@ -312,6 +322,11 @@
         "title": "跨链资产身份 · 原生、桥接与可兑付凭证",
         "summary": "用发行、托管、退出条件判断同名资产是否能互换"
       }
+    ],
+    "firstRead": [
+      "course/04-scaling/01-layer-2.md",
+      "course/04-scaling/04-bridges.md",
+      "course/04-scaling/10-rollup-withdrawal-operation.md"
     ]
   },
   {
@@ -396,6 +411,11 @@
         "title": "汇率、结算批次与商户净收",
         "summary": "解释报价币种、收款币种、账务币种与实际银行到账"
       }
+    ],
+    "firstRead": [
+      "course/05-payments/01-token-standards.md",
+      "course/05-payments/02-stablecoin-models.md",
+      "course/05-payments/03-payment-reconciliation.md"
     ]
   },
   {
@@ -495,6 +515,11 @@
         "title": "闪电流动性 · 原子借还与风控边界",
         "summary": "用原子交易解释闪电借贷的用途、费用与风险检查"
       }
+    ],
+    "firstRead": [
+      "course/06-defi/01-defi-overview.md",
+      "course/06-defi/02-liquidity-pools.md",
+      "course/06-defi/03-slippage.md"
     ]
   },
   {
@@ -511,8 +536,8 @@
       },
       {
         "path": "course/07-markets/02-cex-derivatives.md",
-        "title": "CEX 合约、保证金与清算",
-        "summary": "区分名义仓位、保证金与盈亏，理解清算为什么可能先于价格回归"
+        "title": "CEX 合约业务全流程",
+        "summary": "用 140 个场景算懂全仓、逐仓、最大可开量、强平价和组合保证金，走完下单到清算对账"
       },
       {
         "path": "course/07-markets/03-perp-dex.md",
@@ -594,6 +619,11 @@
         "title": "合约指标价格 · 成交价、标记价与结算价",
         "summary": "区分保证金系统、资金费和持仓到期所用的不同价格"
       }
+    ],
+    "firstRead": [
+      "course/07-markets/01-cex-spot.md",
+      "course/07-markets/02-cex-derivatives.md",
+      "course/07-markets/06-risk-controls.md"
     ]
   },
   {

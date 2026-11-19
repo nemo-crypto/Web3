@@ -32,6 +32,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 
 .site-header { position: sticky; z-index: 10; top: 0; background: #f7f8f4f7; border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
 .header-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.header-brand-group { display: flex; align-items: center; gap: 24px; }
+.visit-stats { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; white-space: nowrap; }
+.visit-stats strong { margin-inline-start: 3px; color: var(--accent); font-weight: 750; font-variant-numeric: tabular-nums; }
+.visit-stats span + span { border-inline-start: 1px solid var(--line); padding-inline-start: 8px; }
+.visit-stats-footer { display: none; }
 .brand { display: inline-flex; gap: 10px; align-items: center; text-decoration: none; white-space: nowrap; font-size: 17px; font-weight: 800; }
 .brand-symbol { display: grid; place-items: center; position: relative; width: 33px; height: 33px; background: var(--dark); border-radius: 10px; flex: none; }
 .brand-symbol i { width: 13px; height: 9px; position: absolute; border: 1px solid #e8f8b6; transform: rotate(-30deg) skewX(20deg); border-radius: 2px; }
@@ -131,6 +136,11 @@ kbd { font: inherit; border: 1px solid var(--line); background: var(--paper); bo
 .stage-goal { margin-top: 20px; padding: 12px 15px; border-radius: 10px; border: 1px solid #a6c3a64f; background: #29434c; font-size: 14px; line-height: 1.6; display: flex; gap: 12px; }
 .stage-goal strong { color: #dceeaf; flex: none; }
 .stage-lessons { margin-top: 26px; }
+.stage-first-read { margin-top: 16px; padding: 13px 16px; border: 1px solid var(--line); border-radius: 11px; background: #eef3e9; }
+.stage-first-read h2 { font-size: 15px; margin-bottom: 5px; }
+.stage-first-read ol { margin: 0; padding-left: 22px; color: var(--accent); font-size: 13px; }
+.stage-first-read li { margin-block: 5px; }
+.stage-first-read a { text-underline-offset: 3px; }
 .stage-lessons h2 { margin-bottom: 12px; font-size: 22px; }
 .lesson-list, .lesson-sidebar ol { list-style: none; padding: 0; margin: 0; }
 .lesson-list { display: grid; gap: 7px; }
@@ -202,6 +212,8 @@ kbd { font: inherit; border: 1px solid var(--line); background: var(--paper); bo
 .search-results small { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); line-height: 1.55; }
 
 @media (max-width: 1100px) {
+  .visit-stats-header { display: none; }
+  .visit-stats-footer { display: inline-flex; }
   .lesson-layout { grid-template-columns: 190px minmax(0, 1fr); }
   .lesson-layout .article-toc { display: none; }
   .lesson-layout .compact-toc { display: block; }

@@ -11,7 +11,7 @@
 | BTCFi与比特币质押.md | [BTCFi 与比特币质押](../course/06-defi/13-btcfi.md) |
 | BTC、ETH、SOL生态对比.md | [Bitcoin、Ethereum 与 Solana](../course/01-blockchain/06-btc-eth-sol.md) |
 | BasedRollup与预确认.md | [Based Rollup 与预确认](../course/04-scaling/08-based-rollups.md) |
-| CEX-Contract.md | [CEX 合约、保证金与清算](../course/07-markets/02-cex-derivatives.md) |
+| CEX-Contract.md | [CEX 合约业务全流程](../course/07-markets/02-cex-derivatives.md) |
 | CEX-Spot.md | [CEX 现货与订单簿](../course/07-markets/01-cex-spot.md) |
 | Connectwallet.md | [连接钱包与账户切换](../course/02-wallets/04-connect-wallet.md) |
 | DeFi.md | [DeFi 全景与资金路径](../course/06-defi/01-defi-overview.md) |

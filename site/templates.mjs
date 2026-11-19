@@ -17,6 +17,14 @@ function stageNav(ctx, active) {
   </nav>`;
 }
 
+function visitStats(location) {
+  return `<span class="visit-stats visit-stats-${location}" data-visit-stats hidden
+    title="访客按浏览器标识去重，浏览按页面打开次数计算">
+    <span>访客 <strong data-visitors></strong></span>
+    <span>浏览 <strong data-page-views></strong></span>
+  </span>`;
+}
+
 export function pageShell(ctx, content) {
   const home = ctx.path === 'README.md';
   const title = home ? 'Web3 实战课程' : `${ctx.doc.title} · Web3 实战课程`;
@@ -35,10 +43,13 @@ export function pageShell(ctx, content) {
   <a class="skip" href="#main">跳到内容</a>
   <header class="site-header">
     <div class="header-inner container">
-      <a href="${href(ctx, 'README.md')}" class="brand">
-        <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span>Web3 实战课程</span>
-      </a>
+      <div class="header-brand-group">
+        <a href="${href(ctx, 'README.md')}" class="brand">
+          <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>Web3 实战课程</span>
+        </a>
+        ${ctx.visitCounter ? visitStats('header') : ''}
+      </div>
       <nav class="header-menu" aria-label="主要导航">
         <a href="${href(ctx, 'course/README.md')}"${ctx.path.startsWith('course/') ? ' aria-current="location"' : ''}>课程目录</a>
         <a href="${href(ctx, 'README.md')}#routes">学习路线</a>
@@ -63,6 +74,7 @@ export function pageShell(ctx, content) {
   <footer class="site-footer">
     <div class="container footer-inner">
       <a href="${href(ctx, 'README.md')}" class="footer-brand">Web3 实战课程</a>
+      ${ctx.visitCounter ? visitStats('footer') : ''}
       <nav aria-label="页脚">
         <a href="${href(ctx, 'course/README.md')}">逐课目录</a>
         <a href="${href(ctx, businessPagePath)}">业务案例库</a>
@@ -186,11 +198,12 @@ function breadcrumb(ctx, stage) {
   return `<nav class="breadcrumb" aria-label="当前位置">
     <a href="${href(ctx, 'README.md')}">课程首页</a>
     <span aria-hidden="true">/</span>
-    ${stage ? `<a href="${stageHref(ctx, stage)}">${text(stage.title)}</a>` : '<span>逐课目录</span>'}
+    ${stage ? `<a href="${stageHref(ctx, stage)}">${text(stage.title)}</a>` : `<span>${text(ctx.doc.title)}</span>`}
   </nav>`;
 }
 
 export function stagePage(ctx, stage) {
+  const firstRead = (stage.firstRead || []).map(path => stage.lessons.find(lesson => lesson.path === path));
   return `<div class="container reading-container">
     ${breadcrumb(ctx, stage)}
     <div class="stage-layout">
@@ -202,6 +215,10 @@ export function stagePage(ctx, stage) {
           <p>${text(stage.summary)}</p>
           <div class="stage-goal"><strong>阶段验收</strong><span>${text(stage.result)}</span></div>
         </section>
+        ${firstRead.length ? `<nav class="stage-first-read" aria-labelledby="stage-first-read-title">
+          <h2 id="stage-first-read-title">第一次读这个阶段</h2>
+          <ol>${firstRead.map(lesson => `<li><a href="${href(ctx, lesson.path)}">${text(lesson.title)}</a></li>`).join('')}</ol>
+        </nav>` : ''}
         <section aria-labelledby="stage-list-title" class="stage-lessons" data-stage-progress>
           <div class="stage-list-header"><h2 id="stage-list-title">本阶段课程</h2><span data-stage-label></span></div>
           <progress class="stage-progress" max="${stage.lessons.length}" value="0" aria-label="本阶段完成进度"></progress>

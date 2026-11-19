@@ -8,6 +8,12 @@
 
 **阶段验收** 能设计一张稳定币支付账单和完整的退款、对账流程。
 
+## 第一次读这个阶段
+
+1. [原生币、ERC-20、ERC-721 与 ERC-1155](01-token-standards.md)
+2. [稳定币的发行、锚定与赎回](02-stablecoin-models.md)
+3. [稳定币收款、退款与对账](03-payment-reconciliation.md)
+
 ## 课程目录
 
 | 课程 | 学习成果 |

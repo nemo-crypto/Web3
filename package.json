@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "npm run build && node site/serve.mjs",
+    "start": "npm run build -- --visit-counter && node --experimental-sqlite site/serve.mjs",
     "build": "node site/build.mjs",
-    "check": "node site/build.mjs --check && node --test site/lab-models.test.mjs"
+    "check": "node site/build.mjs --check && node --experimental-sqlite --test site/*.test.mjs"
   },
   "engines": {
     "node": ">=22.12"

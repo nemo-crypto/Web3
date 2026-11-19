@@ -1,4 +1,35 @@
 const base = document.body.dataset.base;
+const visitStats = document.querySelectorAll('[data-visit-stats]');
+if (visitStats.length) {
+  async function recordVisit() {
+    try {
+      const response = await fetch(`${base}/api/visit`, {
+        method: 'POST',
+        headers: { 'X-Course-Visit': '1' },
+      });
+      if (!response.ok) return;
+      const { visitors, pageViews } = await response.json();
+      if (!Number.isSafeInteger(visitors) || !Number.isSafeInteger(pageViews)) return;
+      const format = new Intl.NumberFormat('zh-CN');
+      for (const badge of visitStats) {
+        badge.querySelector('[data-visitors]').textContent = format.format(visitors);
+        badge.querySelector('[data-page-views]').textContent = format.format(pageViews);
+        badge.hidden = false;
+      }
+    } catch {
+      // The badge stays hidden while counts are unavailable.
+    }
+  }
+  if (document.visibilityState === 'visible') recordVisit();
+  else {
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible') return;
+      document.removeEventListener('visibilitychange', onVisible);
+      recordVisit();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+  }
+}
 const progressKey = 'web3-course:progress:v1';
 const lastKey = 'web3-course:last-lesson:v1';
 

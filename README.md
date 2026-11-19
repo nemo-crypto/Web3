@@ -2,7 +2,9 @@
 
 从一笔交易开始，学会解释钱包、合约和链上业务。11 个阶段，共 139 课，覆盖区块链原理、资产与支付、DApp 开发、DeFi、交易系统、治理和前沿协议。
 
-第一次接触 Web3，适合从 [Web3 从哪开始](course/00-start/01-web3-in-practice.md)读起。每课包含场景、学习目标和练习，已有经验也可以沿业务路线直接跳读。
+第一次接触 Web3，可以先读[一张票的购票、转让和验票流程](course/00-start/01-web3-in-practice.md)，再按[零基础六站路线](course/00-start/02-reading-path.md#第一次阅读按这六站走)练习看到账、钱包弹窗和支付记录。全程使用模拟数据。已有经验也可以沿业务路线直接跳读。
+
+读完基础后可以做[新手跟做练习](reference/beginner-workbook.md)。六道题分别练习分笔付款、跨链提现、重复验票、剩余授权、商户净收与盘口恢复，每题都带逐步答案。进入钱包、合约、扩容、支付、DeFi 或市场阶段时，先读该阶段标出的三讲即可开始。
 
 ## 按目标选路线
 
@@ -62,5 +64,15 @@ npm start
 ~~~
 
 打开 [本地课程站](http://localhost:4173)。运行 `npm run build` 生成可部署到静态服务器的 `dist/`，运行 `npm run check` 验证课程结构、链接与页面构建。
+
+### 发布公开课程站
+
+在仓库 [Settings → Pages](https://github.com/nemo-crypto/Web3/settings/pages) 把发布源设为 **GitHub Actions**。`.github/workflows/pages.yml` 会在推送到 `main` 时检查并发布 `dist/`，也可从 Actions 手动运行。首次发布成功后，访客可通过 [Web3 课程站](https://nemo-crypto.github.io/Web3/) 打开课程，电脑和手机都无需启动本地服务。
+
+### 访客与浏览统计
+
+用 `npm start` 运行时，桌面顶栏及手机页脚有累计访客与页面浏览量。访客按当前安装的站点写入的随机浏览器标识累计去重，首次打开一个页面和刷新会计入页面浏览。同一浏览器再次访问时继续使用同一标识。换设备、用无痕窗口或清除 Cookie 会被视为新访客。
+
+计数存到本机 `.site-data/visits.sqlite`。正式运行可用 `WEB3_STATS_DB` 指向持久化磁盘，HTTPS 环境可设置 `WEB3_SECURE_COOKIE=1`。计数器只保存随机访客标识和计数。纯静态的 `npm run build` 版本可照常阅读课程，访客统计需要可写的服务端。
 
 更新课程时编辑 `course/` 下的 Markdown。增删或重命名课程后，同步更新阶段目录、[逐课目录](course/README.md)和 `course/catalog.json`，再运行构建检查。
