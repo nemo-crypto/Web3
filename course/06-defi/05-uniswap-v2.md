@@ -1,0 +1,168 @@
+<a id="top"></a>
+
+# Uniswap V2 底层与防夹：从公式到执行约束
+
+[课程首页](../../README.md) · [本阶段](README.md)
+
+> **学习目标**：推导 V2 报价，理解 Pair、Router 和预言机边界，避免把示例计算器当成完整防夹合约。
+>
+> **建议先读**：[流动性池](02-liquidity-pools.md)、[滑点](03-slippage.md)、[防夹](04-mev-protection.md)。
+
+## 先看一个场景
+
+两种资产精度不同，数据库存量是原始整数。兑换公式必须在正确的储备方向和单位上执行。
+
+**读完试一试**
+
+把 Factory、Pair、Router 的职责对应到离线计算器的输入来源。
+
+<details>
+<summary>展开本篇目录</summary>
+
+- [1. Factory、Pair、Router 各做什么](#section-1)
+- [2. 推导含手续费的输出公式](#section-2)
+- [3. 可独立运行的整数教学计算器](#section-3)
+- [4. 价格影响应怎样定义](#section-4)
+- [5. 真正的执行约束在哪里](#section-5)
+- [6. 池内现价不是独立预言机](#section-6)
+- [7. 工程验证重点](#section-7)
+- [8. 自测与参考答案](#section-8)
+- [9. 延伸阅读](#section-9)
+
+</details>
+
+---
+
+
+<a id="section-1"></a>
+
+## 1. Factory、Pair、Router 各做什么
+
+| 组件 | 主要职责 | 开发时核对什么 |
+| --- | --- | --- |
+| Factory | 创建和查找资产对 | 网络、部署来源、Pair 地址 |
+| Pair | 持有储备并约束兑换 | token0/token1、储备和余额 |
+| Router | 提供路径与用户操作入口 | path、deadline、最小输出 |
+
+Pair 中的储备顺序按 token0/token1 确定，不一定与当前输入方向一致。输入 USDC、输出 ETH 时，必须把相应储备映射成 reserveIn/reserveOut。
+
+<a id="section-2"></a>
+
+## 2. 推导含手续费的输出公式
+
+令输入储备为 x、输出储备为 y、输入为 Δx、手续费比例为 f，参与定价的有效输入为 `a = Δx(1-f)`。
+
+```text
+(x + a)(y - Δy) = xy
+Δy = ay / (x + a)
+```
+
+在 V2 的 0.3% 手续费假设下，把比例写为整数：
+
+```text
+amountInWithFee = amountIn × 997
+amountOut = floor(amountInWithFee × reserveOut
+                  / (reserveIn × 1000 + amountInWithFee))
+```
+
+公式给出某一储备快照下的报价。其他 V2 分叉可能修改费率，不应无条件复用 997/1000。
+
+<a id="section-3"></a>
+
+## 3. 可独立运行的整数教学计算器
+
+以下 Python 3 代码不访问网络、不发交易。示例使用 6 位 USDC 和 18 位 ETH 的原始整数单位。
+
+```python
+def amount_out(amount_in, reserve_in, reserve_out):
+    if min(amount_in, reserve_in, reserve_out) <= 0:
+        raise ValueError("输入和储备必须为正整数")
+    effective = amount_in * 997
+    return effective * reserve_out // (reserve_in * 1000 + effective)
+
+
+def minimum_out(quote, slippage_bps):
+    if quote <= 0 or not 0 <= slippage_bps < 10_000:
+        raise ValueError("报价或滑点范围不正确")
+    return quote * (10_000 - slippage_bps) // 10_000
+
+quote = amount_out(1_000 * 10**6, 20_000 * 10**6, 10 * 10**18)
+minimum = minimum_out(quote, 100)  # 100 bps = 1%
+assert 474_000_000_000_000_000 < quote < 475_000_000_000_000_000
+assert minimum == quote * 99 // 100
+print(quote, minimum)
+```
+
+输出约为 0.474830 ETH，最低输出约为 0.470081 ETH。整数向下取整是合约金额计算的重要部分；界面展示时再按 decimals 格式化。
+
+<a id="section-4"></a>
+
+## 4. 价格影响应怎样定义
+
+可在[交互实验室](../../reference/practice-lab.md)用相同储备分别输入 100 A 和 2,000 A，比较成交前池内价格估算与实际报价的差值。修改滑点容忍度时，观察最低输出变化，预计输出仍由同一份储备、输入和费率计算。
+
+以输入单位购买输出资产的平均价为 `amountIn / amountOut`，交易前边际价为 `reserveIn / reserveOut`。若采用“平均价相对参考价上涨比例”：
+
+```text
+偏差 = (amountIn / amountOut) / (reserveIn / reserveOut) - 1
+```
+
+在上述例子中，这一口径含手续费，约为 5.30%。若采用“相对于理想输出少了多少”的口径，则约为 5.03%。两者分母不同，不能直接混用。
+
+原稿中的 `(reserveOut - amountOut) / reserveOut` 表示剩余储备占比，不是价格影响。报告时应写明基准、方向和是否包含手续费。
+
+<a id="section-5"></a>
+
+## 5. 真正的执行约束在哪里
+
+精确输入兑换通常由用户给出 `amountOutMin` 和 `deadline`，Router 执行时检查结果与有效期。应把用户确认的最低输出一路保留到链上，不能在发送时改成 0。
+
+如果在同一笔交易中读取已被操纵的当前储备，再基于它计算最低输出，这并不能保护用户原先接受的价格。检查依据必须绑定用户认可的报价与范围。
+
+手续费转账代币、rebase 代币等可能不符合普通输入到账假设。需要明确支持范围，不能仅靠公式推断最终用户到账。
+
+<a id="section-6"></a>
+
+## 6. 池内现价不是独立预言机
+
+直接调用 `getReserves()` 得到现价，仍然在读取同一个可能被操纵的池子。TWAP 通过时间窗口降低瞬时操纵影响，但窗口、流动性与更新方式决定实际效果；独立预言机也需要检查时间戳、精度与异常状态。
+
+V2 的累积价格可用于构建时间加权价格，但不是单次读储备就自动得到 TWAP。把不同 decimals 的 reserve0 与 reserve1 相加判断“是否闪电贷”没有有效依据。
+
+<a id="section-7"></a>
+
+## 7. 工程验证重点
+
+| 场景 | 应观察到的结果 |
+| --- | --- |
+| 报价后储备恶化，输出低于最小值 | 交易回滚，不能静默降标准 |
+| 已超过 deadline | 拒绝执行 |
+| token0/token1 与输入顺序相反 | 报价仍使用正确储备 |
+| 输出优于报价 | 允许成交，避免无符号减法下溢 |
+| 私有通道失败 | 明确回退策略与用户可见状态 |
+
+这些检查验证执行边界，不等于证明合约或整条交易路径绝对安全。路由、授权、资金处理和重入等问题仍属于完整合约审查范围。
+
+<a id="section-8"></a>
+
+## 8. 自测与参考答案
+
+**问题**：给交易设置 `tx.gasprice <= 上限`，为什么不能阻止夹子？
+
+**答案**：它只限制当前交易费用，不约束其他交易能否被插在前后，也不检查成交价格。
+
+**练习**：把教学计算器的输入量改成原来的十倍，对比输出、平均价和最低输出，解释哪个参数体现交易规模风险。
+
+<a id="section-9"></a>
+
+## 9. 延伸阅读
+
+- [Uniswap V2 Library](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/library)、[V2 Oracle](https://docs.uniswap.org/contracts/v2/concepts/core-concepts/oracles)。
+
+---
+
+[← 返回学习导航](../../README.md) · [回到顶部](#top)
+
+---
+
+[上一课 · MEV 与交易保护](04-mev-protection.md) · [下一课 · Uniswap v4 与 Hooks](06-uniswap-v4.md)

@@ -1,0 +1,41 @@
+# NFT、元数据与 IPFS
+
+[课程首页](../../README.md) · [本阶段](README.md)
+
+> **学完能做到**：区分代币所有权、内容访问与许可权利。
+
+## 先看一个场景
+
+门票 NFT 的 ownerOf 显示持有者，图片从外部文件读取，能否转售与入场由其他规则决定。
+
+## 核心原理
+
+NFT 标准定义资产识别与转移。元数据关联图片和属性，可能来自 URL、链上数据或内容标识 CID。可持续访问还依赖内容是否有可用副本。
+
+## 需要区分的概念
+
+tokenId 标识合约内的资产；URI 指向描述；CID 按内容寻址；许可条款定义用户可获得的版权或其他权利。
+
+## 动手练习
+
+在示例数据中记录链、合约、tokenId、URI。模拟网关离线与发行方更新 URI，分别说明如何验证内容和恢复访问。
+
+## 自测
+
+拥有 NFT 就一定拥有图片版权吗？
+
+<details>
+<summary>查看参考答案</summary>
+
+要查发行协议与许可条款。链上的持有记录证明相应代币状态，图片复制和商用通常另有法律条件。
+
+</details>
+
+## 延伸阅读
+
+- [ERC-721](https://eips.ethereum.org/EIPS/eip-721)
+- [IPFS CID](https://docs.ipfs.tech/concepts/content-addressing/)
+
+---
+
+[查看本阶段](README.md) · [下一课 · DAO、提案、投票与金库](02-dao-governance.md)

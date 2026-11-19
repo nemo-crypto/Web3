@@ -1,0 +1,796 @@
+[
+  {
+    "id": "00-start",
+    "title": "起步与学习方法",
+    "audience": "全体读者",
+    "summary": "搞清区块链解决什么问题，用五个问题拆解第一个项目。",
+    "result": "交付一张 Web3 产品分析卡，标出状态、权限、确认、成本和失败处理。",
+    "lessons": [
+      {
+        "path": "course/00-start/01-web3-in-practice.md",
+        "title": "Web3 从哪开始",
+        "summary": "识别 Web3 产品里链、钱包与服务端各自承担的职责"
+      },
+      {
+        "path": "course/00-start/02-reading-path.md",
+        "title": "怎样用这门课",
+        "summary": "选择学习路线、检查前置知识并安排第一份练习"
+      },
+      {
+        "path": "course/00-start/03-safe-learning-environment.md",
+        "title": "准备模拟环境与阅读资料",
+        "summary": "准备可复现的离线数据、测试钱包和资料版本"
+      }
+    ]
+  },
+  {
+    "id": "01-blockchain",
+    "title": "区块链与交易基础",
+    "audience": "初学者",
+    "summary": "理解数据、账户与交易如何组成账本，再比较不同链。",
+    "result": "能追踪一笔示例转账，解释地址、Gas、回执和最终性。",
+    "lessons": [
+      {
+        "path": "course/01-blockchain/01-public-blockchains.md",
+        "title": "公链与区块浏览器",
+        "summary": "解释公链由谁维护、交易如何确认，以及选择一条链时应该比较什么"
+      },
+      {
+        "path": "course/01-blockchain/02-hash-signatures-merkle.md",
+        "title": "哈希、签名与 Merkle 证明",
+        "summary": "区分哈希、数字签名与路径证明能证明的内容"
+      },
+      {
+        "path": "course/01-blockchain/03-accounts-utxo.md",
+        "title": "账户模型、UTXO 与状态",
+        "summary": "看懂 Bitcoin 找零与 EVM 账户式转账"
+      },
+      {
+        "path": "course/01-blockchain/04-layer-1.md",
+        "title": "Layer 1 与结算",
+        "summary": "理解执行、共识、结算、数据可用性四种职责，以及扩容为什么存在取舍"
+      },
+      {
+        "path": "course/01-blockchain/05-consensus-finality.md",
+        "title": "共识、分叉与最终性",
+        "summary": "用不同确认层级设计账务入账规则"
+      },
+      {
+        "path": "course/01-blockchain/06-btc-eth-sol.md",
+        "title": "Bitcoin、Ethereum 与 Solana",
+        "summary": "用同一套维度比较三种生态，避免把币价、TPS 和技术能力混成一张排行榜"
+      },
+      {
+        "path": "course/01-blockchain/07-transaction-lifecycle.md",
+        "title": "交易回执、Gas 与失败",
+        "summary": "从提交到到账读懂交易状态、费用与常见失败"
+      },
+      {
+        "path": "course/01-blockchain/08-bitcoin-lightning.md",
+        "title": "Bitcoin 支付通道与 Lightning",
+        "summary": "把链上结算、通道流动性与路由结果分开理解"
+      },
+      {
+        "path": "course/01-blockchain/09-read-an-explorer.md",
+        "title": "区块浏览器 · 用五步读懂一条交易",
+        "summary": "从哈希、网络、回执、日志与确认状态中提取业务证据"
+      },
+      {
+        "path": "course/01-blockchain/10-bitcoin-psbt.md",
+        "title": "Bitcoin PSBT · 多人交易如何从草稿走到广播",
+        "summary": "识别输入、输出、找零、手续费和签名完成度"
+      },
+      {
+        "path": "course/01-blockchain/11-fee-estimates-and-limits.md",
+        "title": "Gas 报价与费用上限 · 给交易页一个可解释的数字",
+        "summary": "区分 gas limit、预估费用、费用上限和回执实际花费"
+      }
+    ]
+  },
+  {
+    "id": "02-wallets",
+    "title": "钱包、身份与签名",
+    "audience": "用户与产品开发者",
+    "summary": "从自托管和恢复开始，理解连接、登录、签名、授权及账户升级。",
+    "result": "能画出钱包登录和代币授权的两条独立流程。",
+    "lessons": [
+      {
+        "path": "course/02-wallets/01-wallet-types.md",
+        "title": "钱包类型与资产控制权",
+        "summary": "区分钱包的分类维度，理解密钥、地址、签名、广播与恢复之间的关系"
+      },
+      {
+        "path": "course/02-wallets/02-keys-backup-and-recovery.md",
+        "title": "私钥、助记词与账户恢复",
+        "summary": "识别钱包恢复材料、验证者与设备遗失时的流程"
+      },
+      {
+        "path": "course/02-wallets/03-signatures-approvals.md",
+        "title": "签名、授权额度与撤销",
+        "summary": "判断钱包弹窗将授予怎样的链上或链下权限"
+      },
+      {
+        "path": "course/02-wallets/04-connect-wallet.md",
+        "title": "连接钱包与账户切换",
+        "summary": "分清连接、登录、代币授权和交易签名，建立完整的钱包状态管理"
+      },
+      {
+        "path": "course/02-wallets/05-sign-in-with-ethereum.md",
+        "title": "SIWE 与后端登录会话",
+        "summary": "设计钱包登录、会话过期与地址切换后的处理"
+      },
+      {
+        "path": "course/02-wallets/06-mpc-wallets.md",
+        "title": "MPC 钱包与阈值签名",
+        "summary": "理解阈值签名、分片与恢复，并分清 MPC、多签和托管关系"
+      },
+      {
+        "path": "course/02-wallets/07-account-abstraction.md",
+        "title": "账户抽象、ERC-4337 与 EIP-7702",
+        "summary": "分清 ERC-4337、EIP-7702、Paymaster 和 Session Key，理解“少弹窗”的权限代价"
+      },
+      {
+        "path": "course/02-wallets/08-passkeys.md",
+        "title": "Passkey 与嵌入式钱包",
+        "summary": "区分登录认证、链上签名与账户恢复，理解 Passkey 的工作方式，并能评估嵌入式钱包的控制权"
+      },
+      {
+        "path": "course/02-wallets/09-multisig-and-session-keys.md",
+        "title": "多签、会话密钥与团队授权",
+        "summary": "为多人金库区分签名门槛与受限自动化权限"
+      },
+      {
+        "path": "course/02-wallets/10-qr-wallet-connect.md",
+        "title": "移动钱包连接 · 二维码、唤起与恢复",
+        "summary": "为手机浏览器和桌面扫码设计会话状态与恢复动作"
+      },
+      {
+        "path": "course/02-wallets/11-approval-review.md",
+        "title": "钱包权限检查 · 从连接到撤回",
+        "summary": "按账户、网络、代币和授权主体审查用户操作"
+      },
+      {
+        "path": "course/02-wallets/12-ens-address-resolution.md",
+        "title": "ENS 与名称解析 · 收款别名怎样变成地址",
+        "summary": "理解解析过程、缓存时效和收款前的二次核对"
+      },
+      {
+        "path": "course/02-wallets/13-wallet-batched-calls.md",
+        "title": "钱包批量调用 · 多步授权和执行如何组合",
+        "summary": "按钱包能力设计组合调用、状态追踪和回退路径"
+      }
+    ]
+  },
+  {
+    "id": "03-development",
+    "title": "智能合约、DApp 与数据",
+    "audience": "开发者",
+    "summary": "从合约接口与本地测试到前端、事件索引和上线维护。",
+    "result": "能说明一笔合约写入的状态机，并设计重试和对账测试。",
+    "lessons": [
+      {
+        "path": "course/03-development/01-evm-and-contracts.md",
+        "title": "EVM、合约、ABI 与状态",
+        "summary": "理解可读调用、写入交易和事件日志"
+      },
+      {
+        "path": "course/03-development/02-solidity-testing.md",
+        "title": "Solidity 与本地合约测试",
+        "summary": "为简单合约设计角色、输入、状态和测试"
+      },
+      {
+        "path": "course/03-development/03-ethers-sdk.md",
+        "title": "ethers v6 与合约调用",
+        "summary": "理解 Provider、Signer、Contract 与单位转换，读懂旧版示例并避免混用 API"
+      },
+      {
+        "path": "course/03-development/04-rpc-events-and-reorgs.md",
+        "title": "JSON-RPC、回执、事件与重组",
+        "summary": "设计可恢复的链上事件同步和查询"
+      },
+      {
+        "path": "course/03-development/05-graphql-indexing.md",
+        "title": "链上索引与 GraphQL",
+        "summary": "理解 RPC、索引器和 GraphQL 的分工，避免把“最新返回”当成“链上最终状态”"
+      },
+      {
+        "path": "course/03-development/06-oracles.md",
+        "title": "预言机、价格来源与时效",
+        "summary": "检查链上价格的单位、时间、来源和备用逻辑"
+      },
+      {
+        "path": "course/03-development/07-contract-security-upgrades.md",
+        "title": "合约权限、升级与安全验收",
+        "summary": "从防御角度审阅角色、升级、外部调用与应急流程"
+      },
+      {
+        "path": "course/03-development/08-dapp-release.md",
+        "title": "DApp 发布、监控与重试",
+        "summary": "设计前端交易状态、索引一致性及应急演练"
+      },
+      {
+        "path": "course/03-development/09-transaction-ui-state-machine.md",
+        "title": "交易前端状态机 · 从点击到业务完成",
+        "summary": "统一签名、提交、替换、失败与确认时的页面文案和恢复条件"
+      },
+      {
+        "path": "course/03-development/10-release-deployment-review.md",
+        "title": "合约发版验收 · 部署证据与角色交接",
+        "summary": "整理合约地址、编译产物、角色差异与回退条件"
+      },
+      {
+        "path": "course/03-development/11-onchain-analytics.md",
+        "title": "链上数据分析 · 事件、口径与数据延迟",
+        "summary": "定义能复跑的活跃、交易额、收入与留存统计"
+      },
+      {
+        "path": "course/03-development/12-solidity-event-workshop.md",
+        "title": "Solidity 事件实训 · 业务状态与索引字段",
+        "summary": "将本地的订单核销状态、日志与读取结果对应起来"
+      },
+      {
+        "path": "course/03-development/13-webhook-delivery.md",
+        "title": "Webhook 回调 · 签名核验、重复和乱序",
+        "summary": "为支付或索引通知设计可靠的接收与重放"
+      },
+      {
+        "path": "course/03-development/14-indexed-data-schema.md",
+        "title": "事件索引表 · 原始记录、业务读模型与重建",
+        "summary": "为链上查询建最小可追溯的数据表和游标"
+      }
+    ]
+  },
+  {
+    "id": "04-scaling",
+    "title": "扩容、跨链与可验证计算",
+    "audience": "进阶读者",
+    "summary": "追踪 L2、跨链消息与证明系统中的执行、验证和最终性。",
+    "result": "能为跨链转账画出源链、消息、目标链与故障处理流程。",
+    "lessons": [
+      {
+        "path": "course/04-scaling/01-layer-2.md",
+        "title": "Layer 2、Rollup 与退出",
+        "summary": "分清 Rollup、侧链和 Validium，理解排序器确认与最终结算的差别"
+      },
+      {
+        "path": "course/04-scaling/02-layer-3.md",
+        "title": "Layer 3 与应用专用层",
+        "summary": "理解 L3 的常见技术含义，并区分架构层级、同名产品和预测市场"
+      },
+      {
+        "path": "course/04-scaling/03-data-availability.md",
+        "title": "模块化区块链与数据可用性",
+        "summary": "区分执行、结算、数据可用性和长期存储，理解 DAS 的作用与边界"
+      },
+      {
+        "path": "course/04-scaling/04-bridges.md",
+        "title": "跨链桥与资产迁移",
+        "summary": "理解锁定铸造、销毁铸造和流动性桥，学会追踪跨链交易状态"
+      },
+      {
+        "path": "course/04-scaling/05-cross-chain-messaging.md",
+        "title": "跨链消息、IBC 与中继",
+        "summary": "区分资产桥与通用消息的来源验证、顺序和超时"
+      },
+      {
+        "path": "course/04-scaling/06-zero-knowledge.md",
+        "title": "零知识证明基础",
+        "summary": "分清公开陈述、私密见证、证明与验证，理解 ZK 如何用于隐私和扩容"
+      },
+      {
+        "path": "course/04-scaling/07-zkvm.md",
+        "title": "zkVM 与可验证计算",
+        "summary": "区分通用 zkVM、zkEVM 与零知识属性，理解程序、输入和输出怎样绑定到同一份证明"
+      },
+      {
+        "path": "course/04-scaling/08-based-rollups.md",
+        "title": "Based Rollup 与预确认",
+        "summary": "区分排序、执行、证明与最终性，理解 Based Rollup 的设计取向，以及预确认为什么不是最终结算"
+      },
+      {
+        "path": "course/04-scaling/09-intents.md",
+        "title": "意图交易、Solver 与链抽象",
+        "summary": "理解 Intent、Solver 与结算规则，分清“隐藏跨链步骤”和“消除跨链风险”"
+      },
+      {
+        "path": "course/04-scaling/10-rollup-withdrawal-operation.md",
+        "title": "Rollup 提现 · 证明、等待与领取",
+        "summary": "追踪从 L2 退出到 L1 到账的不同状态"
+      },
+      {
+        "path": "course/04-scaling/11-cross-chain-support.md",
+        "title": "跨链支持工单 · 查路径、重试与人工处理",
+        "summary": "把源链、消息、目标链和做市支付对齐成可追踪工单"
+      },
+      {
+        "path": "course/04-scaling/12-blobs-and-data-retention.md",
+        "title": "Blob 与历史保留 · 发布数据之后还要保存什么",
+        "summary": "区分数据可用性期限、证明引用和可持续的历史数据访问"
+      },
+      {
+        "path": "course/04-scaling/13-canonical-and-wrapped-assets.md",
+        "title": "跨链资产身份 · 原生、桥接与可兑付凭证",
+        "summary": "用发行、托管、退出条件判断同名资产是否能互换"
+      }
+    ]
+  },
+  {
+    "id": "05-payments",
+    "title": "代币、稳定币与资产上链",
+    "audience": "产品与支付团队",
+    "summary": "识别不同资产的权利与发行机制，将链上支付落到订单和账务。",
+    "result": "能设计一张稳定币支付账单和完整的退款、对账流程。",
+    "lessons": [
+      {
+        "path": "course/05-payments/01-token-standards.md",
+        "title": "原生币、ERC-20、ERC-721 与 ERC-1155",
+        "summary": "根据用途选择标识、金额单位与授权模型"
+      },
+      {
+        "path": "course/05-payments/02-stablecoin-models.md",
+        "title": "稳定币的发行、锚定与赎回",
+        "summary": "判断稳定币的支持资产、赎回条件和脱锚机制"
+      },
+      {
+        "path": "course/05-payments/03-payment-reconciliation.md",
+        "title": "稳定币收款、退款与对账",
+        "summary": "为商户订单设计付款确认、异常处理和退款记录"
+      },
+      {
+        "path": "course/05-payments/04-stablecoin-payments.md",
+        "title": "稳定币支付与 PayFi",
+        "summary": "区分稳定币、支付基础设施与支付融资，算清到账时间、汇兑和资金占用"
+      },
+      {
+        "path": "course/05-payments/05-payment-networks.md",
+        "title": "支付链案例：Tempo 与 Arc",
+        "summary": "理解为什么支付应用需要专门优化的链，区分稳定币转账、Gas 计费和法币结算，并能评估一条支付链的接入成本"
+      },
+      {
+        "path": "course/05-payments/06-real-world-assets.md",
+        "title": "RWA 与现实资产代币化",
+        "summary": "读懂资产、法律权利、托管、发行和赎回之间的关系"
+      },
+      {
+        "path": "course/05-payments/07-tokenized-securities.md",
+        "title": "代币化股票与链上证券",
+        "summary": "区分股票权利、经济敞口和合成衍生品，理解托管、赎回、分红与交易时段"
+      },
+      {
+        "path": "course/05-payments/08-synthetic-dollars.md",
+        "title": "合成美元与收益型稳定币",
+        "summary": "区分法币储备稳定币、合成美元与收益凭证，理解对冲如何降低方向敞口，并识别收益的来源和变化原因"
+      },
+      {
+        "path": "course/05-payments/09-custody-and-ramps.md",
+        "title": "托管、出入金与余额迁移",
+        "summary": "理解银行、交易平台、钱包之间的资金路径"
+      },
+      {
+        "path": "course/05-payments/10-batch-payouts.md",
+        "title": "批量付款 · 工资、退款与补发",
+        "summary": "为多笔付款设计审批、批次、部分失败和逐笔对账"
+      },
+      {
+        "path": "course/05-payments/11-subscriptions-and-invoices.md",
+        "title": "订阅与发票 · 周期、额度与取消",
+        "summary": "把周期结算、授权撤销、续费提醒和服务权益分开设计"
+      },
+      {
+        "path": "course/05-payments/12-checkout-and-fulfillment.md",
+        "title": "商户收银台 · 从支付链接到发货",
+        "summary": "用订单与付款状态设计结账页面和服务端回调"
+      },
+      {
+        "path": "course/05-payments/13-double-entry-ledger.md",
+        "title": "支付账本 · 实收、商户应付与独立退款",
+        "summary": "按资产和账务账户追踪付款、结算和冲销"
+      },
+      {
+        "path": "course/05-payments/14-payment-routing-capacity.md",
+        "title": "支付路由 · 目标资产、限额与失败切换",
+        "summary": "为多链收款和商户结算选择可执行路径"
+      },
+      {
+        "path": "course/05-payments/15-fx-and-settlement.md",
+        "title": "汇率、结算批次与商户净收",
+        "summary": "解释报价币种、收款币种、账务币种与实际银行到账"
+      }
+    ]
+  },
+  {
+    "id": "06-defi",
+    "title": "DeFi、流动性与收益",
+    "audience": "进阶读者",
+    "summary": "沿着兑换、借贷、收益到清算理解资金流、费用和组合风险。",
+    "result": "能离线算出兑换、健康因子和收益，并标明假设。",
+    "lessons": [
+      {
+        "path": "course/06-defi/01-defi-overview.md",
+        "title": "DeFi 全景与资金路径",
+        "summary": "理解兑换、借贷、稳定币和收益来源，并能解释一次组合操作依赖哪些协议"
+      },
+      {
+        "path": "course/06-defi/02-liquidity-pools.md",
+        "title": "AMM 流动性池",
+        "summary": "手算恒定乘积兑换，区分池深度、LP 收益和无常损失"
+      },
+      {
+        "path": "course/06-defi/03-slippage.md",
+        "title": "价格影响、滑点与最低输出",
+        "summary": "区分滑点、价格影响、点差和手续费，正确设置最低输出"
+      },
+      {
+        "path": "course/06-defi/04-mev-protection.md",
+        "title": "MEV 与交易保护",
+        "summary": "理解链上 sandwich attack 的顺序，知道哪些措施能限制损失、哪些只改善体验"
+      },
+      {
+        "path": "course/06-defi/05-uniswap-v2.md",
+        "title": "Uniswap V2 公式与合约",
+        "summary": "推导 V2 报价，理解 Pair、Router 和预言机边界，避免把示例计算器当成完整防夹合约"
+      },
+      {
+        "path": "course/06-defi/06-uniswap-v4.md",
+        "title": "Uniswap v4 与 Hooks",
+        "summary": "理解 Hook 的调用位置、PoolManager 与闪电记账的作用，并能判断自定义池增加了哪些能力和风险"
+      },
+      {
+        "path": "course/06-defi/07-concentrated-liquidity.md",
+        "title": "集中流动性与交易聚合",
+        "summary": "解释价格区间、流动性利用率和路由成本"
+      },
+      {
+        "path": "course/06-defi/08-lending-liquidation.md",
+        "title": "借贷、健康因子与清算",
+        "summary": "在给定价格、抵押率和债务参数下演算风险"
+      },
+      {
+        "path": "course/06-defi/09-staking-basics.md",
+        "title": "质押、LST 与机会成本",
+        "summary": "区分协议质押奖励、可转让凭证和退出风险"
+      },
+      {
+        "path": "course/06-defi/10-restaking.md",
+        "title": "再质押与 LRT",
+        "summary": "分清 Staking、LST、Restaking 和 LRT，理解惩罚、收益与退出路径如何叠加"
+      },
+      {
+        "path": "course/06-defi/11-vaults.md",
+        "title": "ERC-4626 金库与策略份额",
+        "summary": "分清资产与份额、接口标准与投资策略，理解策展人和分配者的权限，并计算金库净值"
+      },
+      {
+        "path": "course/06-defi/12-yield-tokenization.md",
+        "title": "Pendle 与本金、收益拆分",
+        "summary": "理解 SY、PT、YT 的关系，计算 PT 的隐含收益，并解释为什么 YT 可能随着时间流逝而贬值"
+      },
+      {
+        "path": "course/06-defi/13-btcfi.md",
+        "title": "BTCFi 与比特币质押",
+        "summary": "区分包装 BTC、借贷、Bitcoin 扩展网络和 BTC 质押，追踪资产实际由谁控制"
+      },
+      {
+        "path": "course/06-defi/14-yield-accounting.md",
+        "title": "APR、APY 与收益归因",
+        "summary": "区分标称收益、复利、费用与持仓变动"
+      },
+      {
+        "path": "course/06-defi/15-risk-parameter-review.md",
+        "title": "借贷风控评审 · 抵押上限、清算与流动性",
+        "summary": "用同一份输入比较抵押仓位、上限与预言机情景"
+      },
+      {
+        "path": "course/06-defi/16-swap-quote-review.md",
+        "title": "聚合报价评审 · 报价方向、Gas 与落地",
+        "summary": "对同一报价输入比较不同路由的费用和执行约束"
+      },
+      {
+        "path": "course/06-defi/17-token-transfer-behavior.md",
+        "title": "代币转账行为 · 手续费、重定基与余额差",
+        "summary": "处理实际到账与请求数量不一致的资产"
+      },
+      {
+        "path": "course/06-defi/18-atomic-liquidity.md",
+        "title": "闪电流动性 · 原子借还与风控边界",
+        "summary": "用原子交易解释闪电借贷的用途、费用与风险检查"
+      }
+    ]
+  },
+  {
+    "id": "07-markets",
+    "title": "交易市场、风控与量化",
+    "audience": "交易系统开发者",
+    "summary": "从订单簿和仓位开始，理解执行差异、研究方法和系统风控。",
+    "result": "能写出含手续费、成交状态、拒单和对账的离线交易方案。",
+    "lessons": [
+      {
+        "path": "course/07-markets/01-cex-spot.md",
+        "title": "CEX 现货与订单簿",
+        "summary": "读懂交易对、订单类型和成交状态，区分平台账本成交与链上转账"
+      },
+      {
+        "path": "course/07-markets/02-cex-derivatives.md",
+        "title": "CEX 合约、保证金与清算",
+        "summary": "区分名义仓位、保证金与盈亏，理解清算为什么可能先于价格回归"
+      },
+      {
+        "path": "course/07-markets/03-perp-dex.md",
+        "title": "Perp DEX 与 Hyperliquid",
+        "summary": "区分交易架构、保证金、清算与代币叙事，理解链上撮合为什么不等于没有运营风险"
+      },
+      {
+        "path": "course/07-markets/04-open-derivatives.md",
+        "title": "HIP-3、HIP-4 与开放市场",
+        "summary": "区分开放建市、永续合约和结果合约，理解市场部署者承担的职责，并计算两类产品的损益"
+      },
+      {
+        "path": "course/07-markets/05-options-and-market-design.md",
+        "title": "期权、到期与产品损益",
+        "summary": "对比现货、永续与期权在到期和价格波动下的现金流"
+      },
+      {
+        "path": "course/07-markets/06-risk-controls.md",
+        "title": "交易系统风控与监控",
+        "summary": "建立交易前、交易中、交易后的控制机制，正确计算权益、回撤和敞口"
+      },
+      {
+        "path": "course/07-markets/07-copy-trading.md",
+        "title": "跟单交易与执行偏差",
+        "summary": "理解跟单比例、成交偏差、系统同步和业绩评估"
+      },
+      {
+        "path": "course/07-markets/08-tradingview.md",
+        "title": "TradingView、回测与告警",
+        "summary": "区分指标、策略回测和实盘执行，理解 Pine Script 与 Webhook 的边界"
+      },
+      {
+        "path": "course/07-markets/09-grid-trading.md",
+        "title": "网格交易与库存风险",
+        "summary": "计算网格价位与单格净收益，理解已实现收益和库存浮亏的差别"
+      },
+      {
+        "path": "course/07-markets/10-cross-exchange-arbitrage.md",
+        "title": "跨交易所价差与再平衡",
+        "summary": "使用买卖盘口与库存计算净收益，理解双腿失败和资金再平衡"
+      },
+      {
+        "path": "course/07-markets/11-triangular-arbitrage.md",
+        "title": "三角套利与交易方向",
+        "summary": "用量纲检查乘除方向，计入三次手续费，并理解连续成交风险"
+      },
+      {
+        "path": "course/07-markets/12-basis-and-funding.md",
+        "title": "基差、资金费率与对冲",
+        "summary": "区分交割基差交易与永续资金费策略，计算对冲后的收益与保证金风险"
+      },
+      {
+        "path": "course/07-markets/13-statistical-arbitrage.md",
+        "title": "统计套利与样本外验证",
+        "summary": "区分相关性、协整和价差回归，理解样本外验证与前视偏差"
+      },
+      {
+        "path": "course/07-markets/14-trading-engineering.md",
+        "title": "交易脚本与订单工程",
+        "summary": "建立数据、信号、风控、订单和对账的完整链路，避免循环重复下单"
+      },
+      {
+        "path": "course/07-markets/15-research-and-backtesting.md",
+        "title": "数据质量、回测与模拟成交",
+        "summary": "识别回测偏差并设计可复现实验"
+      },
+      {
+        "path": "course/07-markets/16-market-making-inventory.md",
+        "title": "做市与库存 · 从报价表到压力复盘",
+        "summary": "在模拟订单簿中追踪成交价差、库存和未实现损益"
+      },
+      {
+        "path": "course/07-markets/17-order-book-sequence-recovery.md",
+        "title": "订单簿同步 · 快照、增量与序号缺口",
+        "summary": "从撮合快照和连续增量重建可用市场视图"
+      },
+      {
+        "path": "course/07-markets/18-derivative-settlement-prices.md",
+        "title": "合约指标价格 · 成交价、标记价与结算价",
+        "summary": "区分保证金系统、资金费和持仓到期所用的不同价格"
+      }
+    ]
+  },
+  {
+    "id": "08-applications",
+    "title": "应用、治理与商业模式",
+    "audience": "产品与研究人员",
+    "summary": "用资产、数据、权利和真实需求比较 NFT、DAO、游戏、社交和基础设施。",
+    "result": "能画出应用的用户、收入、治理和退出关系。",
+    "lessons": [
+      {
+        "path": "course/08-applications/01-nft-metadata-and-ipfs.md",
+        "title": "NFT、元数据与 IPFS",
+        "summary": "区分代币所有权、内容访问与许可权利"
+      },
+      {
+        "path": "course/08-applications/02-dao-governance.md",
+        "title": "DAO、提案、投票与金库",
+        "summary": "识别治理状态、票权分布与执行权限"
+      },
+      {
+        "path": "course/08-applications/03-gamefi.md",
+        "title": "链游与资产经济",
+        "summary": "理解链上资产在游戏中的作用，并能检查奖励经济是否依赖持续新增资金"
+      },
+      {
+        "path": "course/08-applications/04-socialfi.md",
+        "title": "去中心化社交与 SocialFi",
+        "summary": "区分去中心化社交与社交金融，分析身份、内容存储和代币激励各自的作用"
+      },
+      {
+        "path": "course/08-applications/05-depin.md",
+        "title": "DePIN 与服务交付",
+        "summary": "理解硬件供给、需求收入和代币激励的闭环，区分节点数量与有效服务能力"
+      },
+      {
+        "path": "course/08-applications/06-prediction-markets.md",
+        "title": "预测市场与结果结算",
+        "summary": "理解结果份额、市场隐含概率、预言机和争议结算，避免把价格当成事实"
+      },
+      {
+        "path": "course/08-applications/07-token-launches.md",
+        "title": "代币发行平台与曲线",
+        "summary": "分清发行平台、平台上的代币和 Meme 文化，读懂曲线发行与迁移流程"
+      },
+      {
+        "path": "course/08-applications/08-inscriptions.md",
+        "title": "Bitcoin Ordinals 与铭文",
+        "summary": "区分交易数据、Ordinal 编号、UTXO 与索引规则，理解铭文与 BRC-20 的关系"
+      },
+      {
+        "path": "course/08-applications/09-runes.md",
+        "title": "Bitcoin Runes 与 UTXO 代币",
+        "summary": "理解 Runes 的发行、铸造和转移，区分 Runes、铭文、BRC-20 与 THORChain 的 RUNE"
+      },
+      {
+        "path": "course/08-applications/10-tokenomics.md",
+        "title": "代币供给、解锁与激励",
+        "summary": "拆解供给、流通、分配和收入的不同口径"
+      },
+      {
+        "path": "course/08-applications/11-enterprise-and-credentials.md",
+        "title": "存证、供应链与可验证凭证",
+        "summary": "设计只上链必要摘要的企业流程"
+      },
+      {
+        "path": "course/08-applications/12-membership-loyalty.md",
+        "title": "会员与积分 · 发行、使用与权益边界",
+        "summary": "为会员凭证设计加入、兑换、过期和迁移流程"
+      },
+      {
+        "path": "course/08-applications/13-ticketing-and-redemption.md",
+        "title": "链上票务 · 转让、核销与退款",
+        "summary": "定义票券持有权与活动实际入场记录的关系"
+      },
+      {
+        "path": "course/08-applications/14-nft-royalties-and-secondary.md",
+        "title": "NFT 二级交易 · 版税、平台费与转让",
+        "summary": "区分链上版税接口、市场收取逻辑和卖家净收"
+      },
+      {
+        "path": "course/08-applications/15-governance-vote-delegation.md",
+        "title": "治理委托 · 快照票权、委托人与执行结果",
+        "summary": "读懂余额、已委托票权和提案执行的独立记录"
+      }
+    ]
+  },
+  {
+    "id": "09-frontier",
+    "title": "智能体、隐私与前沿专题",
+    "audience": "进阶读者",
+    "summary": "辨认前沿提案的信任依赖、授权范围和验证条件。",
+    "result": "能写出一个智能体付款或隐私证明案例的接口与信任边界。",
+    "lessons": [
+      {
+        "path": "course/09-frontier/01-ai-web3.md",
+        "title": "AI 与 Web3 的应用分工",
+        "summary": "识别真正的技术结合点，区分链上记录、计算验证和模型质量"
+      },
+      {
+        "path": "course/09-frontier/02-x402.md",
+        "title": "x402 与 API 付款",
+        "summary": "理解 HTTP 402、付款授权、验证与结算的区别，并设计不会重复扣款的智能体消费流程"
+      },
+      {
+        "path": "course/09-frontier/03-agent-identity.md",
+        "title": "ERC-8004 与智能体身份",
+        "summary": "区分 Agent 身份、声誉、验证与真实能力，理解为什么链上评分不能消除欺诈"
+      },
+      {
+        "path": "course/09-frontier/04-agent-commerce.md",
+        "title": "AP2 与智能体商务授权",
+        "summary": "区分购物意图、订单授权和付款授权，理解 AP2、x402 与 Agent 身份机制的分工"
+      },
+      {
+        "path": "course/09-frontier/05-identity-and-pop.md",
+        "title": "数字身份与真人证明",
+        "summary": "区分身份、账户控制、真人性、唯一性与实名，理解匿名证明如何限制重复参与"
+      },
+      {
+        "path": "course/09-frontier/06-zktls.md",
+        "title": "zkTLS 与可验证链下数据",
+        "summary": "理解 TLS 会话、来源证明、选择性披露与业务真实性的区别，判断链下数据如何进入链上决策"
+      },
+      {
+        "path": "course/09-frontier/07-fhe-and-privacy.md",
+        "title": "FHE、MPC、TEE 与隐私计算",
+        "summary": "区分 FHE、ZK、MPC 与 TEE，理解密文计算、结果正确性和解密权限是不同问题"
+      },
+      {
+        "path": "course/09-frontier/08-post-quantum.md",
+        "title": "后量子签名与账户迁移",
+        "summary": "区分签名、密钥协商和哈希的风险，理解后量子算法与链上迁移为什么不是同一件事"
+      },
+      {
+        "path": "course/09-frontier/09-infofi.md",
+        "title": "InfoFi 与注意力激励",
+        "summary": "区分广义信息金融与注意力奖励，读懂 Mindshare、评分和激励设计的局限"
+      },
+      {
+        "path": "course/09-frontier/10-desci.md",
+        "title": "DeSci、科研资助与知识产权",
+        "summary": "理解科研资助、BioDAO、知识产权凭证与 AI 科研助手，区分资金热度和科学证据"
+      },
+      {
+        "path": "course/09-frontier/11-tee-attestations.md",
+        "title": "可信执行环境与远程证明",
+        "summary": "看懂证据、验证者和业务策略，解释硬件证明的边界"
+      },
+      {
+        "path": "course/09-frontier/12-credential-status-revocation.md",
+        "title": "可验证凭证 · 签发、出示与撤销",
+        "summary": "区分签名有效、声明真实、持有人绑定和业务可用"
+      }
+    ]
+  },
+  {
+    "id": "10-projects",
+    "title": "练习、验收与术语",
+    "audience": "全体读者",
+    "summary": "用模拟数据把钱包、兑换和支付串成可检查的交付物。",
+    "result": "独立完成一项课程项目，提交状态图、测试用例和验收记录。",
+    "lessons": [
+      {
+        "path": "course/10-projects/01-project-wallet-reader.md",
+        "title": "项目一 · 钱包资产与交易状态",
+        "summary": "交付只读钱包页状态图和一组测试数据"
+      },
+      {
+        "path": "course/10-projects/02-project-swap.md",
+        "title": "项目二 · 兑换报价与状态机",
+        "summary": "用模拟储备交付报价、保护参数和交易回执状态"
+      },
+      {
+        "path": "course/10-projects/03-project-payments.md",
+        "title": "项目三 · 稳定币收款与对账",
+        "summary": "交付订单模型、事件对账和失败恢复测试"
+      },
+      {
+        "path": "course/10-projects/04-project-protocol-review.md",
+        "title": "项目四 · 协议评审与产品设计",
+        "summary": "写出能让产品、开发和风控共同复核的架构评审"
+      },
+      {
+        "path": "course/10-projects/05-glossary.md",
+        "title": "中文术语速查",
+        "summary": "能用简短、准确的词义定位应读章节"
+      },
+      {
+        "path": "course/10-projects/06-project-incident-drill.md",
+        "title": "项目五 · 链上支付上线与故障演练",
+        "summary": "交付跨团队发布清单、对账证据和异常工单手册"
+      },
+      {
+        "path": "course/10-projects/07-project-build-checkout.md",
+        "title": "项目六 · 搭一个可验收的链上收银台",
+        "summary": "结合界面、模拟回调、订单状态与故障验收，交付完整支付流程"
+      }
+    ]
+  }
+]
