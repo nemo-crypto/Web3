@@ -73,10 +73,12 @@ npm start
 
 ### 访客与浏览统计
 
+公开课程站通过 [Hits](https://github.com/silentsoft/hits) 在桌面顶栏和手机页脚显示全站累计浏览量。所有课程页使用同一个计数，刷新也可能计入浏览量。这项统计从启用后累计，按次数展示。请求使用课程站的固定标识，不发送当前页面地址或浏览器标识。
+
 用 `npm start` 运行时，桌面顶栏及手机页脚有累计访客与页面浏览量。访客按当前安装的站点写入的随机浏览器标识累计去重，首次打开一个页面和刷新会计入页面浏览。同一浏览器再次访问时继续使用同一标识。换设备、用无痕窗口或清除 Cookie 会被视为新访客。
 
 计数存到本机 `.site-data/visits.sqlite`。正式运行可用 `WEB3_STATS_DB` 指向持久化磁盘，HTTPS 环境可设置 `WEB3_SECURE_COOKIE=1`。计数器只保存随机访客标识和计数。纯静态的 `npm run build` 版本可照常阅读课程，访客统计需要可写的服务端。
 
-GitHub Pages 可使用 `stats/` 内的 Cloudflare Worker 保存站点级统计。部署 Worker 后，在仓库 Actions 变量设置 `WEB3_VISIT_ENDPOINT` 为服务的 HTTPS `/visit` 地址，再运行 Pages 工作流。公网计数从服务启用时累计，按浏览器的随机本地标识去重。清理浏览器存储或换设备会算作新访客。
+如果已有支持浏览器去重的计数服务，可以把它的 HTTPS 接口填入仓库 Actions 变量 `WEB3_VISIT_ENDPOINT`。发布时会优先使用自有服务，并显示访客和浏览量。仓库的 `stats/` 中保留了一个兼容接口的 Worker 示例。
 
 更新课程时编辑 `course/` 下的 Markdown。增删或重命名课程后，同步更新阶段目录、[逐课目录](course/README.md)和 `course/catalog.json`，再运行构建检查。

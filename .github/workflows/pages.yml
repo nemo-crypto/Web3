@@ -23,7 +23,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: npm run build
+      - run: npm run build -- --public-pageviews
         env:
           WEB3_VISIT_ENDPOINT: ${{ vars.WEB3_VISIT_ENDPOINT }}
       - uses: actions/upload-pages-artifact@v4

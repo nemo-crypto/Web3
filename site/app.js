@@ -1,4 +1,35 @@
 const base = document.body.dataset.base;
+function whenVisible(action) {
+  if (document.visibilityState === 'visible') {
+    action();
+    return;
+  }
+  const onVisible = () => {
+    if (document.visibilityState !== 'visible') return;
+    document.removeEventListener('visibilitychange', onVisible);
+    action();
+  };
+  document.addEventListener('visibilitychange', onVisible);
+}
+
+const publicPageviews = document.querySelectorAll('[data-public-pageviews]');
+if (publicPageviews.length) {
+  whenVisible(() => {
+    const narrow = window.matchMedia('(max-width: 1100px)');
+    const image = new Image();
+    image.alt = '全站累计浏览量';
+    image.height = 20;
+    image.referrerPolicy = 'no-referrer';
+    const place = () => publicPageviews[narrow.matches ? 1 : 0].append(image);
+    place();
+    narrow.addEventListener('change', place);
+    image.addEventListener('load', () => {
+      for (const slot of publicPageviews) slot.hidden = false;
+    }, { once: true });
+    image.src = 'https://hits.sh/nemo-crypto.github.io/Web3.svg?view=total&label=%E6%B5%8F%E8%A7%88%E9%87%8F&color=416530';
+  });
+}
+
 const visitStats = document.querySelectorAll('[data-visit-stats]');
 if (visitStats.length) {
   async function recordVisit() {
@@ -30,15 +61,7 @@ if (visitStats.length) {
       // The badge stays hidden while counts are unavailable.
     }
   }
-  if (document.visibilityState === 'visible') recordVisit();
-  else {
-    const onVisible = () => {
-      if (document.visibilityState !== 'visible') return;
-      document.removeEventListener('visibilitychange', onVisible);
-      recordVisit();
-    };
-    document.addEventListener('visibilitychange', onVisible);
-  }
+  whenVisible(recordVisit);
 }
 const progressKey = 'web3-course:progress:v1';
 const lastKey = 'web3-course:last-lesson:v1';

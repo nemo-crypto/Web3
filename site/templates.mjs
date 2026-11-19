@@ -17,7 +17,12 @@ function stageNav(ctx, active) {
   </nav>`;
 }
 
-function visitStats(location) {
+function visitStats(ctx, location) {
+  if (ctx.publicPageviews) {
+    return `<span class="visit-stats visit-stats-${location}" data-public-pageviews hidden
+      title="全站累计浏览量，由 Hits 统计"></span>`;
+  }
+  if (!ctx.visitCounter) return '';
   return `<span class="visit-stats visit-stats-${location}" data-visit-stats hidden
     title="访客按浏览器标识去重，浏览按页面打开次数计算">
     <span>访客 <strong data-visitors></strong></span>
@@ -48,7 +53,7 @@ export function pageShell(ctx, content) {
           <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
           <span>Web3 实战课程</span>
         </a>
-        ${ctx.visitCounter ? visitStats('header') : ''}
+        ${visitStats(ctx, 'header')}
       </div>
       <nav class="header-menu" aria-label="主要导航">
         <a href="${href(ctx, 'course/README.md')}"${ctx.path.startsWith('course/') ? ' aria-current="location"' : ''}>课程目录</a>
@@ -74,7 +79,7 @@ export function pageShell(ctx, content) {
   <footer class="site-footer">
     <div class="container footer-inner">
       <a href="${href(ctx, 'README.md')}" class="footer-brand">Web3 实战课程</a>
-      ${ctx.visitCounter ? visitStats('footer') : ''}
+      ${visitStats(ctx, 'footer')}
       <nav aria-label="页脚">
         <a href="${href(ctx, 'course/README.md')}">逐课目录</a>
         <a href="${href(ctx, businessPagePath)}">业务案例库</a>

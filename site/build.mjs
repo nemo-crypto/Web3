@@ -14,6 +14,7 @@ if (visitEndpoint && new URL(visitEndpoint).protocol !== 'https:') {
   throw new Error('WEB3_VISIT_ENDPOINT must use HTTPS');
 }
 const visitCounter = Boolean(visitEndpoint) || process.argv.includes('--visit-counter');
+const publicPageviews = !visitCounter && process.argv.includes('--public-pageviews');
 const markdown = new MarkdownIt({ html: true, linkify: true, typographer: false });
 const catalog = JSON.parse(await readFile(resolve(root, 'course/catalog.json'), 'utf8'));
 const lessonEntries = catalog.flatMap(stage => stage.lessons.map((lesson, index) => ({ ...lesson, stage, index })));
@@ -141,7 +142,7 @@ if (errors.length) {
     const stage = stageEntries.find(entry => entry.path === path);
     const lesson = lessonEntries.find(entry => entry.path === path);
     const base = posix.relative(posix.dirname(outputPath(path)), '.') || '.';
-    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, visitCounter, visitEndpoint };
+    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, visitCounter, visitEndpoint, publicPageviews };
     const content = path === 'README.md' ? homePage(context) :
       path === 'course/README.md' ? catalogPage(context) :
       path === businessPagePath ? businessPage(context) :
