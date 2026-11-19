@@ -77,4 +77,6 @@ npm start
 
 计数存到本机 `.site-data/visits.sqlite`。正式运行可用 `WEB3_STATS_DB` 指向持久化磁盘，HTTPS 环境可设置 `WEB3_SECURE_COOKIE=1`。计数器只保存随机访客标识和计数。纯静态的 `npm run build` 版本可照常阅读课程，访客统计需要可写的服务端。
 
+GitHub Pages 可使用 `stats/` 内的 Cloudflare Worker 保存站点级统计。部署 Worker 后，在仓库 Actions 变量设置 `WEB3_VISIT_ENDPOINT` 为服务的 HTTPS `/visit` 地址，再运行 Pages 工作流。公网计数从服务启用时累计，按浏览器的随机本地标识去重。清理浏览器存储或换设备会算作新访客。
+
 更新课程时编辑 `course/` 下的 Markdown。增删或重命名课程后，同步更新阶段目录、[逐课目录](course/README.md)和 `course/catalog.json`，再运行构建检查。

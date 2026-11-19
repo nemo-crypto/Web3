@@ -9,7 +9,11 @@ import { labPages } from './labs.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = resolve(root, 'dist');
 const checking = process.argv.includes('--check');
-const visitCounter = process.argv.includes('--visit-counter');
+const visitEndpoint = process.env.WEB3_VISIT_ENDPOINT?.trim();
+if (visitEndpoint && new URL(visitEndpoint).protocol !== 'https:') {
+  throw new Error('WEB3_VISIT_ENDPOINT must use HTTPS');
+}
+const visitCounter = Boolean(visitEndpoint) || process.argv.includes('--visit-counter');
 const markdown = new MarkdownIt({ html: true, linkify: true, typographer: false });
 const catalog = JSON.parse(await readFile(resolve(root, 'course/catalog.json'), 'utf8'));
 const lessonEntries = catalog.flatMap(stage => stage.lessons.map((lesson, index) => ({ ...lesson, stage, index })));
@@ -137,7 +141,7 @@ if (errors.length) {
     const stage = stageEntries.find(entry => entry.path === path);
     const lesson = lessonEntries.find(entry => entry.path === path);
     const base = posix.relative(posix.dirname(outputPath(path)), '.') || '.';
-    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, visitCounter };
+    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, visitCounter, visitEndpoint };
     const content = path === 'README.md' ? homePage(context) :
       path === 'course/README.md' ? catalogPage(context) :
       path === businessPagePath ? businessPage(context) :

@@ -1,0 +1,13 @@
+name = "web3-course-visits"
+main = "worker.mjs"
+compatibility_date = "2026-07-01"
+workers_dev = true
+preview_urls = false
+
+[[durable_objects.bindings]]
+name = "COURSE_VISITS"
+class_name = "CourseVisitCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CourseVisitCounter"]

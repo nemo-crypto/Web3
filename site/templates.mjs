@@ -39,7 +39,7 @@ export function pageShell(ctx, content) {
   <link rel="stylesheet" href="${ctx.base}/assets/styles.css">
   <script src="${ctx.base}/assets/app.js" defer></script>
 </head>
-<body data-base="${ctx.base}" data-course-size="${ctx.lessonEntries.length}">
+<body data-base="${ctx.base}" data-course-size="${ctx.lessonEntries.length}"${ctx.visitEndpoint ? ` data-visit-endpoint="${text(ctx.visitEndpoint)}"` : ''}>
   <a class="skip" href="#main">跳到内容</a>
   <header class="site-header">
     <div class="header-inner container">

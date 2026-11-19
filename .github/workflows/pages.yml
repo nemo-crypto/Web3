@@ -24,6 +24,8 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run build
+        env:
+          WEB3_VISIT_ENDPOINT: ${{ vars.WEB3_VISIT_ENDPOINT }}
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist

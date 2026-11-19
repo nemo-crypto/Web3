@@ -3,9 +3,19 @@ const visitStats = document.querySelectorAll('[data-visit-stats]');
 if (visitStats.length) {
   async function recordVisit() {
     try {
-      const response = await fetch(`${base}/api/visit`, {
+      const remoteEndpoint = document.body.dataset.visitEndpoint;
+      let visitor = '1';
+      if (remoteEndpoint) {
+        const key = 'web3-course:visitor:v1';
+        visitor = localStorage.getItem(key);
+        if (!visitor) {
+          visitor = crypto.randomUUID();
+          localStorage.setItem(key, visitor);
+        }
+      }
+      const response = await fetch(remoteEndpoint || `${base}/api/visit`, {
         method: 'POST',
-        headers: { 'X-Course-Visit': '1' },
+        headers: { 'X-Course-Visit': visitor },
       });
       if (!response.ok) return;
       const { visitors, pageViews } = await response.json();
