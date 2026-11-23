@@ -277,7 +277,7 @@ document.addEventListener('keydown', event => {
   const editing = event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable]');
   if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !event.isComposing && !editing && !dialog.open) {
     event.preventDefault();
-    openSearch(document.querySelector('[data-open-search]'));
+    openSearch(document.activeElement);
   }
 });
 dialog.addEventListener('close', () => opener?.focus());
