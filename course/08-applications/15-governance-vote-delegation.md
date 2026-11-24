@@ -40,4 +40,4 @@
 
 ---
 
-[上一课 · NFT 二级交易 · 版税、平台费与转让](14-nft-royalties-and-secondary.md) · [下一阶段 · 智能体、隐私与前沿专题](../09-frontier/README.md)
+[上一课 · NFT 二级交易 · 版税、平台费与转让](14-nft-royalties-and-secondary.md) · [下一课 · 代币经济学 · 流通量、解锁与稀释模型](16-token-supply-model.md)

@@ -7,6 +7,20 @@ export const topics = [
 
 export const businessCases = [
   {
+    id: 'papertrade', topic: 'transaction', title: 'Papertrade 亏损后，怎样用质押分润继续交易',
+    subtitle: '沿着亏损结算、PAPER 铸造、质押和 USDC 领取逐笔对账。', role: '链上永续',
+    context: '教学账户拿 100 USDC 开仓，平仓亏损 40 USDC。结果返还 60 USDC，并按 30 美元合格亏损基数铸造 3,000 PAPER。用户把 PAPER 全部质押，随后看到 6 USDC 可领取分润。',
+    evidence: [['交易账本', '可用余额 60 USDC，已实现损益 −40 USDC'], ['质押池', '用户持有 3,000 / 300,000 枚有效质押 PAPER'], ['分配记录', '当轮分配了 600 USDC，用户可领取 6 USDC']],
+    workflow: ['核对 USDC 平仓结算与合格亏损基数', '核对 PAPER 铸造和质押记录', '按实际分配额计算可领取余额', '确认领取入账后再计入交易余额'],
+    question: '在这次领取确认后，可用余额是多少？',
+    answers: [
+      ['66 USDC，原交易亏损和质押收益分别记账', true, '60 USDC 平仓返还加 6 USDC 已领取分润，可用余额为 66 USDC。'],
+      ['60 USDC，可领取分润会一直留在质押页面', false, '领取确认后，教学账例中的 6 USDC 会进入交易余额。'],
+      ['100 USDC，质押会补齐原交易亏损', false, '质押收益按协议实际分配与有效质押占比计算。本轮只有 6 USDC。'],
+    ],
+    lesson: 'course/07-markets/21-papertrade-protocol.md',
+  },
+  {
     id: 'wallet-resume', topic: 'wallet', title: '切回浏览器，连接还没恢复',
     subtitle: '钱包已批准，DApp 仍停在「等待连接」。', role: '钱包接入',
     context: '用户在手机浏览器打开活动页，随后唤起钱包并批准请求。回到活动页时，浏览器没有收到即时回调，而且钱包切换过地址。',

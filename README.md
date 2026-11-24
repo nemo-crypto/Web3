@@ -1,8 +1,12 @@
 # Web3 实战课程
 
+> **置顶专题** · [Papertrade 详解](course/07-markets/21-papertrade-protocol.md)
+>
+> 从合成永续的亏损结算，算到 PAPER 铸造、质押、USDC 分润和盈利兑付队列。
+
 **[在线体验 · 打开 Web3 实战课程](https://nemo-crypto.github.io/Web3/)**
 
-从一笔交易开始，学会解释钱包、合约和链上业务。11 个阶段，共 139 课，覆盖区块链原理、资产与支付、DApp 开发、DeFi、交易系统、治理和前沿协议。
+从一笔交易开始，学会解释钱包、合约和链上业务。11 个阶段，共 148 课，覆盖区块链原理、资产与支付、DApp 开发、DeFi、交易系统、治理和前沿协议。
 
 第一次接触 Web3，可以先读[一张票的购票、转让和验票流程](course/00-start/01-web3-in-practice.md)，再按[零基础六站路线](course/00-start/02-reading-path.md#第一次阅读按这六站走)练习看到账、钱包弹窗和支付记录。全程使用模拟数据。已有经验也可以沿业务路线直接跳读。
 
@@ -28,9 +32,9 @@
 | 03 | [智能合约、DApp 与数据](course/03-development/README.md) | 14 | 能说明一笔合约写入的状态机，并设计重试和对账测试。 |
 | 04 | [扩容、跨链与可验证计算](course/04-scaling/README.md) | 13 | 能为跨链转账画出源链、消息、目标链与故障处理流程。 |
 | 05 | [代币、稳定币与资产上链](course/05-payments/README.md) | 15 | 能设计一张稳定币支付账单和完整的退款、对账流程。 |
-| 06 | [DeFi、流动性与收益](course/06-defi/README.md) | 18 | 能离线算出兑换、健康因子和收益，并标明假设。 |
-| 07 | [交易市场、风控与量化](course/07-markets/README.md) | 18 | 能写出含手续费、成交状态、拒单和对账的离线交易方案。 |
-| 08 | [应用、治理与商业模式](course/08-applications/README.md) | 15 | 能画出应用的用户、收入、治理和退出关系。 |
+| 06 | [DeFi、流动性与收益](course/06-defi/README.md) | 22 | 能离线算出兑换、健康因子和收益，并标明假设。 |
+| 07 | [交易市场、风控与量化](course/07-markets/README.md) | 21 | 能写出含手续费、成交状态、拒单和对账的离线交易方案。 |
+| 08 | [应用、治理与商业模式](course/08-applications/README.md) | 17 | 能画出应用的用户、收入、治理和退出关系。 |
 | 09 | [智能体、隐私与前沿专题](course/09-frontier/README.md) | 12 | 能写出一个智能体付款或隐私证明案例的接口与信任边界。 |
 | 10 | [练习、验收与术语](course/10-projects/README.md) | 7 | 独立完成一项课程项目，提交状态图、测试用例和验收记录。 |
 
@@ -44,6 +48,9 @@
 | 做交易页面和合约发布 | [交易前端状态机](course/03-development/09-transaction-ui-state-machine.md) · [合约发版验收](course/03-development/10-release-deployment-review.md) |
 | 处理跨链提现或客服异常 | [Rollup 提现](course/04-scaling/10-rollup-withdrawal-operation.md) · [跨链支持工单](course/04-scaling/11-cross-chain-support.md) |
 | 搭建收银台、定期账单和批量退款 | [商户支付与发货](course/05-payments/12-checkout-and-fulfillment.md) · [支付账本](course/05-payments/13-double-entry-ledger.md) · [订阅与发票](course/05-payments/11-subscriptions-and-invoices.md) · [批量付款](course/05-payments/10-batch-payouts.md) |
+| 核算 DeFi 策略的净收益和退出条件 | [策展借贷](course/06-defi/19-curated-lending.md) · [循环借贷](course/06-defi/20-leverage-looping.md) · [代币化国债](course/06-defi/21-tokenized-treasury-yield.md) · [积分与流动性激励](course/06-defi/22-liquidity-incentives.md) |
+| 研究模拟交易、链上永续和预测市场 | [Paper Trading 模拟交易](course/07-markets/19-paper-trading.md) · [Papertrade 亏损发行与质押](course/07-markets/21-papertrade-protocol.md) · [预测市场裁定与兑付](course/07-markets/20-prediction-market-operations.md) |
+| 复核代币经济模型 | [供给、解锁和稀释](course/08-applications/16-token-supply-model.md) · [协议收入、补贴和金库](course/08-applications/17-protocol-revenue.md) |
 | 设计会员、积分或票券 | [会员与积分](course/08-applications/12-membership-loyalty.md) · [票务转让与核销](course/08-applications/13-ticketing-and-redemption.md) |
 
 ## 用同一套方法读项目

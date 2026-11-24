@@ -4,6 +4,7 @@
 
 | 业务问题 | 对应课程 |
 | --- | --- |
+| Papertrade 亏损后，如何核算可继续交易的 USDC | [Papertrade 亏损发行与 USDC 分润](../course/07-markets/21-papertrade-protocol.md) |
 | 手机切回站点后钱包连接没恢复 | [移动钱包连接](../course/02-wallets/10-qr-wallet-connect.md) |
 | 断开钱包后代币额度仍生效 | [钱包权限检查](../course/02-wallets/11-approval-review.md) |
 | 加速交易后需要追踪替换哈希 | [交易前端状态机](../course/03-development/09-transaction-ui-state-machine.md) |

@@ -514,6 +514,26 @@
         "path": "course/06-defi/18-atomic-liquidity.md",
         "title": "闪电流动性 · 原子借还与风控边界",
         "summary": "用原子交易解释闪电借贷的用途、费用与风险检查"
+      },
+      {
+        "path": "course/06-defi/19-curated-lending.md",
+        "title": "策展借贷金库与隔离市场",
+        "summary": "核算金库净值、市场敞口和可赎回额度"
+      },
+      {
+        "path": "course/06-defi/20-leverage-looping.md",
+        "title": "循环借贷与杠杆收益",
+        "summary": "计算杠杆收益、借款成本、健康因子与退出路径"
+      },
+      {
+        "path": "course/06-defi/21-tokenized-treasury-yield.md",
+        "title": "代币化国债与链上现金管理",
+        "summary": "比较份额净值、一级申赎和二级成交的资金路径"
+      },
+      {
+        "path": "course/06-defi/22-liquidity-incentives.md",
+        "title": "流动性激励、积分与 veToken",
+        "summary": "复算手续费、代币排放、积分和票权分配"
       }
     ],
     "firstRead": [
@@ -618,6 +638,21 @@
         "path": "course/07-markets/18-derivative-settlement-prices.md",
         "title": "合约指标价格 · 成交价、标记价与结算价",
         "summary": "区分保证金系统、资金费和持仓到期所用的不同价格"
+      },
+      {
+        "path": "course/07-markets/19-paper-trading.md",
+        "title": "Paper Trading 模拟交易与成交账本",
+        "summary": "设计现货与永续的模拟成交、冻结余额、资金费和对账"
+      },
+      {
+        "path": "course/07-markets/20-prediction-market-operations.md",
+        "title": "预测市场 · 开盘、争议和兑付",
+        "summary": "冻结事件规则，记录份额交易、裁定证据和兑付状态"
+      },
+      {
+        "path": "course/07-markets/21-papertrade-protocol.md",
+        "title": "Papertrade · 从交易亏损到 PAPER 质押与 USDC 分润",
+        "summary": "核算 HyperEVM 合成永续的已实现亏损、PAPER 发行、USDC 分润与利润兑付队列"
       }
     ],
     "firstRead": [
@@ -707,6 +742,16 @@
         "path": "course/08-applications/15-governance-vote-delegation.md",
         "title": "治理委托 · 快照票权、委托人与执行结果",
         "summary": "读懂余额、已委托票权和提案执行的独立记录"
+      },
+      {
+        "path": "course/08-applications/16-token-supply-model.md",
+        "title": "代币经济学 · 流通量、解锁与稀释模型",
+        "summary": "用分配表、归属计划和领取事件核算每月流通量"
+      },
+      {
+        "path": "course/08-applications/17-protocol-revenue.md",
+        "title": "代币经济学 · 协议收入、补贴与金库",
+        "summary": "拆解手续费分成、补贴、回购和金库可支撑时间"
       }
     ]
   },

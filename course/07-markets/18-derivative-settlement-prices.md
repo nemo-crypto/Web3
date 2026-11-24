@@ -36,4 +36,4 @@ K 线触到某个价格就一定触发清算吗？
 
 ---
 
-[上一课 · 订单簿同步 · 快照、增量与序号缺口](17-order-book-sequence-recovery.md) · [下一阶段 · 应用、治理与商业模式](../08-applications/README.md)
+[上一课 · 订单簿同步 · 快照、增量与序号缺口](17-order-book-sequence-recovery.md) · [下一课 · Paper Trading 模拟交易与成交账本](19-paper-trading.md)

@@ -131,6 +131,7 @@ export function homePage(ctx) {
           <a class="button button-secondary" href="${href(ctx, practice)}">打开实验室 <span aria-hidden="true">↗</span></a>
           <a class="text-link hero-case-link" href="${href(ctx, businessPagePath)}">看业务案例 <span aria-hidden="true">→</span></a>
         </div>
+        <p><a class="text-link" href="${href(ctx, 'course/07-markets/21-papertrade-protocol.md')}">置顶专题 · Papertrade 亏损发行与 USDC 分润 <span aria-hidden="true">→</span></a></p>
         <dl class="hero-metrics">
           <div><dt>${ctx.catalog.length}</dt><dd>学习阶段</dd></div>
           <div><dt>${ctx.lessonEntries.length}</dt><dd>课程与案例</dd></div>

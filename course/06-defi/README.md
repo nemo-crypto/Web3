@@ -36,3 +36,7 @@
 | [聚合报价评审 · 报价方向、Gas 与落地](16-swap-quote-review.md) | 对同一报价输入比较不同路由的费用和执行约束 |
 | [代币转账行为 · 手续费、重定基与余额差](17-token-transfer-behavior.md) | 处理实际到账与请求数量不一致的资产 |
 | [闪电流动性 · 原子借还与风控边界](18-atomic-liquidity.md) | 用原子交易解释闪电借贷的用途、费用与风险检查 |
+| [策展借贷金库与隔离市场](19-curated-lending.md) | 核算金库净值、市场敞口和可赎回额度 |
+| [循环借贷与杠杆收益](20-leverage-looping.md) | 计算杠杆收益、借款成本、健康因子与退出路径 |
+| [代币化国债与链上现金管理](21-tokenized-treasury-yield.md) | 比较份额净值、一级申赎和二级成交的资金路径 |
+| [流动性激励、积分与 veToken](22-liquidity-incentives.md) | 复算手续费、代币排放、积分和票权分配 |

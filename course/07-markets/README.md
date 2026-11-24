@@ -36,3 +36,6 @@
 | [做市与库存 · 从报价表到压力复盘](16-market-making-inventory.md) | 在模拟订单簿中追踪成交价差、库存和未实现损益 |
 | [订单簿同步 · 快照、增量与序号缺口](17-order-book-sequence-recovery.md) | 从撮合快照和连续增量重建可用市场视图 |
 | [合约指标价格 · 成交价、标记价与结算价](18-derivative-settlement-prices.md) | 区分保证金系统、资金费和持仓到期所用的不同价格 |
+| [Paper Trading 模拟交易与成交账本](19-paper-trading.md) | 设计现货与永续的模拟成交、冻结余额、资金费和对账 |
+| [预测市场 · 开盘、争议和兑付](20-prediction-market-operations.md) | 冻结事件规则，记录份额交易、裁定证据和兑付状态 |
+| [Papertrade · 从交易亏损到 PAPER 质押与 USDC 分润](21-papertrade-protocol.md) | 核算 HyperEVM 合成永续的已实现亏损、PAPER 发行、USDC 分润与利润兑付队列 |

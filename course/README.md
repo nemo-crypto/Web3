@@ -109,6 +109,10 @@
 - [聚合报价评审 · 报价方向、Gas 与落地](06-defi/16-swap-quote-review.md)
 - [代币转账行为 · 手续费、重定基与余额差](06-defi/17-token-transfer-behavior.md)
 - [闪电流动性 · 原子借还与风控边界](06-defi/18-atomic-liquidity.md)
+- [策展借贷金库与隔离市场](06-defi/19-curated-lending.md)
+- [循环借贷与杠杆收益](06-defi/20-leverage-looping.md)
+- [代币化国债与链上现金管理](06-defi/21-tokenized-treasury-yield.md)
+- [流动性激励、积分与 veToken](06-defi/22-liquidity-incentives.md)
 
 ## 07 · [交易市场、风控与量化](07-markets/README.md)
 
@@ -130,6 +134,9 @@
 - [做市与库存 · 从报价表到压力复盘](07-markets/16-market-making-inventory.md)
 - [订单簿同步 · 快照、增量与序号缺口](07-markets/17-order-book-sequence-recovery.md)
 - [合约指标价格 · 成交价、标记价与结算价](07-markets/18-derivative-settlement-prices.md)
+- [Paper Trading 模拟交易与成交账本](07-markets/19-paper-trading.md)
+- [预测市场 · 开盘、争议和兑付](07-markets/20-prediction-market-operations.md)
+- [Papertrade · 从交易亏损到 PAPER 质押与 USDC 分润](07-markets/21-papertrade-protocol.md)
 
 ## 08 · [应用、治理与商业模式](08-applications/README.md)
 
@@ -148,6 +155,8 @@
 - [链上票务 · 转让、核销与退款](08-applications/13-ticketing-and-redemption.md)
 - [NFT 二级交易 · 版税、平台费与转让](08-applications/14-nft-royalties-and-secondary.md)
 - [治理委托 · 快照票权、委托人与执行结果](08-applications/15-governance-vote-delegation.md)
+- [代币经济学 · 流通量、解锁与稀释模型](08-applications/16-token-supply-model.md)
+- [代币经济学 · 协议收入、补贴与金库](08-applications/17-protocol-revenue.md)
 
 ## 09 · [智能体、隐私与前沿专题](09-frontier/README.md)
 

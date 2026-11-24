@@ -27,3 +27,5 @@
 | [链上票务 · 转让、核销与退款](13-ticketing-and-redemption.md) | 定义票券持有权与活动实际入场记录的关系 |
 | [NFT 二级交易 · 版税、平台费与转让](14-nft-royalties-and-secondary.md) | 区分链上版税接口、市场收取逻辑和卖家净收 |
 | [治理委托 · 快照票权、委托人与执行结果](15-governance-vote-delegation.md) | 读懂余额、已委托票权和提案执行的独立记录 |
+| [代币经济学 · 流通量、解锁与稀释模型](16-token-supply-model.md) | 用分配表、归属计划和领取事件核算每月流通量 |
+| [代币经济学 · 协议收入、补贴与金库](17-protocol-revenue.md) | 拆解手续费分成、补贴、回购和金库可支撑时间 |

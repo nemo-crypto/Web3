@@ -37,4 +37,4 @@
 
 ---
 
-[上一课 · 代币转账行为 · 手续费、重定基与余额差](17-token-transfer-behavior.md) · [下一阶段 · 交易市场、风控与量化](../07-markets/README.md)
+[上一课 · 代币转账行为 · 手续费、重定基与余额差](17-token-transfer-behavior.md) · [下一课 · 策展借贷金库与隔离市场](19-curated-lending.md)
