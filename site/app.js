@@ -201,9 +201,9 @@ let opener;
 function search() {
   results.replaceChildren();
   if (!index) return;
-  const query = normalize(input.value.trim());
+  const query = normalize(input.value).trim();
   if (!query) {
-    status.textContent = '输入概念、业务场景或课名。';
+    status.textContent = '输入课名、案例或关键词。';
     return;
   }
 
@@ -220,8 +220,8 @@ function search() {
   }).filter(match => match.score > 0).sort((a, b) => b.score - a.score);
 
   status.textContent = matches.length > 20
-    ? `找到 ${matches.length} 课，显示前 20 项`
-    : matches.length ? `找到 ${matches.length} 课` : '没有找到课程，试试其他关键词。';
+    ? `找到 ${matches.length} 条结果，显示前 20 项`
+    : matches.length ? `找到 ${matches.length} 条结果` : '没有找到结果，试试其他关键词。';
   for (const { entry } of matches.slice(0, 20)) {
     const item = document.createElement('li');
     const link = document.createElement('a');
@@ -246,10 +246,17 @@ async function openSearch(element) {
     return;
   }
 
-  status.textContent = '正在载入课程目录…';
+  status.textContent = '正在载入搜索索引…';
   try {
-    request ??= fetch(`${base}/assets/search-index.json`).then(response => {
-      if (!response.ok) throw new Error('Course index unavailable');
+    const stableIndex = `${base}/assets/search-index.json`;
+    const versionedIndex = dialog.dataset.index;
+    request ??= (versionedIndex
+      ? fetch(versionedIndex).then(response => response.status === 404
+        ? fetch(stableIndex, { cache: 'no-cache' })
+        : response)
+      : fetch(stableIndex, { cache: 'no-cache' })
+    ).then(response => {
+      if (!response.ok) throw new Error('Search index unavailable');
       return response.json();
     });
     index = await request;
@@ -264,6 +271,11 @@ for (const button of document.querySelectorAll('[data-open-search]')) {
   button.addEventListener('click', () => openSearch(button));
 }
 input.addEventListener('input', search);
+results.addEventListener('click', event => {
+  if (event.target.closest('a') && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+    dialog.close();
+  }
+});
 input.addEventListener('keydown', event => {
   if (event.key === 'ArrowDown' && !event.isComposing) {
     const first = results.querySelector('a');

@@ -73,7 +73,7 @@ export function pageShell(ctx, content) {
       </nav>
       <div class="header-actions">
         <button class="search-button" type="button" data-open-search aria-haspopup="dialog">
-          <span class="search-icon" aria-hidden="true"></span><span>搜索课程</span><kbd aria-hidden="true">/</kbd>
+          <span class="search-icon" aria-hidden="true"></span><span>全站搜索</span><kbd aria-hidden="true">/</kbd>
         </button>
         <a class="source-link" href="https://github.com/nemo-crypto/Web3">GitHub <span aria-hidden="true">↗</span></a>
       </div>
@@ -98,13 +98,13 @@ export function pageShell(ctx, content) {
       </nav>
     </div>
   </footer>
-  <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+  <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title" data-index="${ctx.base}/assets/${ctx.searchIndexFile}">
     <form method="dialog" class="dialog-top">
-      <h2 id="search-title">搜索课程</h2>
+      <h2 id="search-title">全站搜索</h2>
       <button aria-label="关闭搜索" class="icon-button" value="close">×</button>
     </form>
     <label for="search-input" class="sr-only">搜索标题、章节或术语</label>
-    <input id="search-input" placeholder="例如 Gas、稳定币、跨链" type="search" autocomplete="off">
+    <input id="search-input" placeholder="例如 Papertrade、稳定币、跨链" type="search" autocomplete="off">
     <p class="search-status" id="search-status" role="status"></p>
     <ul class="search-results" id="search-results" aria-label="搜索结果"></ul>
   </dialog>

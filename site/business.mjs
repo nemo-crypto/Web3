@@ -8,6 +8,7 @@ export const topics = [
 export const businessCases = [
   {
     id: 'papertrade', topic: 'transaction', title: 'Papertrade 亏损后，怎样用质押分润继续交易',
+    searchTerms: 'Paper Trade PAPER 质押 亏损质押 亏损换U USDC 分润 HyperEVM',
     subtitle: '沿着亏损结算、PAPER 铸造、质押和 USDC 领取逐笔对账。', role: '链上永续',
     context: '教学账户拿 100 USDC 开仓，平仓亏损 40 USDC。结果返还 60 USDC，并按 30 美元合格亏损基数铸造 3,000 PAPER。用户把 PAPER 全部质押，随后看到 6 USDC 可领取分润。',
     evidence: [['交易账本', '可用余额 60 USDC，已实现损益 −40 USDC'], ['质押池', '用户持有 3,000 / 300,000 枚有效质押 PAPER'], ['分配记录', '当轮分配了 600 USDC，用户可领取 6 USDC']],

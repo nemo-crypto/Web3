@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { copyFile, mkdir, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -138,12 +139,38 @@ if (errors.length) {
   console.error([...new Set(errors)].join('\n'));
   process.exitCode = 1;
 } else {
+  const casesByLesson = new Map(businessCases.map(entry => [entry.lesson, entry]));
+  const searchIndex = JSON.stringify([
+    ...lessonEntries.map(lesson => {
+      const doc = documents.get(lesson.path);
+      return {
+        path: outputPath(lesson.path),
+        id: lesson.path,
+        title: lesson.title,
+        summary: lesson.summary,
+        stage: lesson.stage.title,
+        terms: [...doc.toc.map(item => item.title), casesByLesson.get(lesson.path)?.searchTerms].join(' '),
+        content: doc.searchText,
+      };
+    }),
+    ...businessCases.map(entry => ({
+      path: `${outputPath(businessPagePath)}#${entry.id}`,
+      id: entry.id,
+      title: entry.title,
+      summary: entry.subtitle,
+      stage: `业务案例 · ${entry.role}`,
+      terms: entry.searchTerms ?? '',
+      content: [entry.context, ...entry.workflow, ...entry.evidence.flat()].join(' '),
+    })),
+  ]);
+  const searchVersion = createHash('sha256').update(searchIndex).digest('hex').slice(0, 12);
+  const searchIndexFile = `search-index-${searchVersion}.json`;
   const pages = new Map();
   for (const [path, doc] of documents) {
     const stage = stageEntries.find(entry => entry.path === path);
     const lesson = lessonEntries.find(entry => entry.path === path);
     const base = posix.relative(posix.dirname(outputPath(path)), '.') || '.';
-    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, stage, lesson, visitCounter, visitEndpoint, publicPageviews };
+    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, stage, lesson, searchIndexFile, visitCounter, visitEndpoint, publicPageviews };
     const content = path === 'README.md' ? homePage(context) :
       path === 'course/README.md' ? catalogPage(context) :
       path === businessPagePath ? businessPage(context) :
@@ -164,15 +191,8 @@ if (errors.length) {
       copyFile(resolve(root, 'site/lab-ui.mjs'), resolve(nextOutput, 'assets/lab-ui.mjs')),
       copyFile(resolve(root, 'site/lab-models.mjs'), resolve(nextOutput, 'assets/lab-models.mjs')),
       copyFile(resolve(root, 'node_modules/mermaid/dist/mermaid.min.js'), resolve(nextOutput, 'assets/mermaid.min.js')),
-      writeFile(resolve(nextOutput, 'assets/search-index.json'), JSON.stringify(lessonEntries.map(lesson => ({
-        path: outputPath(lesson.path),
-        id: lesson.path,
-        title: lesson.title,
-        summary: lesson.summary,
-        stage: lesson.stage.title,
-        terms: documents.get(lesson.path).toc.map(item => item.title).join(' '),
-        content: documents.get(lesson.path).searchText,
-      })))),
+      writeFile(resolve(nextOutput, 'assets', searchIndexFile), searchIndex),
+      writeFile(resolve(nextOutput, 'assets/search-index.json'), searchIndex),
     ]);
     for (const [path, html] of pages) {
       await mkdir(dirname(resolve(nextOutput, path)), { recursive: true });
