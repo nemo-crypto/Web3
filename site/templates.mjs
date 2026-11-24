@@ -1,3 +1,4 @@
+import { pageSeo } from './seo.mjs';
 import { labContent, labPages } from './labs.mjs';
 import { businessCases as dossiers, businessPagePath, topics } from './business.mjs';
 
@@ -31,15 +32,23 @@ function visitStats(ctx, location) {
 }
 
 export function pageShell(ctx, content) {
-  const home = ctx.path === 'README.md';
-  const title = home ? 'Web3 实战课程' : `${ctx.doc.title} · Web3 实战课程`;
+  const { title, description, url, schema } = pageSeo(ctx);
   return `<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="分阶段学习区块链、钱包、合约、资产、DeFi 与链上业务。">
+  <meta name="description" content="${text(description)}">
+  <link rel="canonical" href="${text(url)}">
+  <meta property="og:type" content="${ctx.lesson ? 'article' : 'website'}">
+  <meta property="og:site_name" content="Web3 实战课程">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:url" content="${text(url)}">
+  <meta property="og:title" content="${text(title)}">
+  <meta property="og:description" content="${text(description)}">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
   <title>${text(title)}</title>
   <link rel="stylesheet" href="${ctx.base}/assets/styles.css">
   <script src="${ctx.base}/assets/app.js" defer></script>

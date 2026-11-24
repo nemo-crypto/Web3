@@ -5,6 +5,7 @@ import MarkdownIt from 'markdown-it';
 import { businessPage, catalogPage, homePage, labPage, lessonPage, pageShell, referencePage, stagePage } from './templates.mjs';
 import { businessCases, businessPagePath, topics } from './business.mjs';
 import { labPages } from './labs.mjs';
+import { canonicalUrl } from './seo.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = resolve(root, 'dist');
@@ -142,7 +143,7 @@ if (errors.length) {
     const stage = stageEntries.find(entry => entry.path === path);
     const lesson = lessonEntries.find(entry => entry.path === path);
     const base = posix.relative(posix.dirname(outputPath(path)), '.') || '.';
-    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, visitCounter, visitEndpoint, publicPageviews };
+    const context = { path, base, catalog, lessonEntries, filename: outputPath, doc, stage, lesson, visitCounter, visitEndpoint, publicPageviews };
     const content = path === 'README.md' ? homePage(context) :
       path === 'course/README.md' ? catalogPage(context) :
       path === businessPagePath ? businessPage(context) :
@@ -177,6 +178,9 @@ if (errors.length) {
       await mkdir(dirname(resolve(nextOutput, path)), { recursive: true });
       await writeFile(resolve(nextOutput, path), html);
     }
+    const urls = [...pages.keys()].map(path => `  <url><loc>${canonicalUrl(path)}</loc></url>`).join('\n');
+    await writeFile(resolve(nextOutput, 'sitemap.xml'),
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
     await rm(output, { recursive: true, force: true });
     await rename(nextOutput, output);
   }
