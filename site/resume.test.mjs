@@ -24,3 +24,19 @@ test('clearing reading history in another tab restores the original start link',
   assert.equal(link.textContent, '开始第一课 →');
   assert.equal(link.querySelector('span').getAttribute('aria-hidden'), 'true');
 });
+
+test('removing or invalidating the last lesson resets resume, and new valid history works again', t => {
+  const win = page(t);
+  const link = win.document.querySelector('[data-resume]');
+  for (const stored of [null, '{broken', JSON.stringify('../outside.md'), JSON.stringify({ path: 'course/wallets/security.md' })]) {
+    if (stored === null) win.localStorage.removeItem(key);
+    else win.localStorage.setItem(key, stored);
+    win.dispatchEvent(new win.StorageEvent('storage', { key }));
+    assert.equal(link.getAttribute('href'), '/Web3/course/intro/start.html');
+    assert.equal(link.textContent, '开始第一课 →');
+    win.localStorage.setItem(key, JSON.stringify('course/defi/lending.md'));
+    win.dispatchEvent(new win.StorageEvent('storage', { key }));
+    assert.equal(link.getAttribute('href'), '/Web3/course/defi/lending.html');
+    assert.match(link.textContent, /继续上次阅读/);
+  }
+});
