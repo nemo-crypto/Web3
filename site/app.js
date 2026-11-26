@@ -92,6 +92,7 @@ let progress = readProgress();
 const lesson = document.querySelector('[data-lesson]');
 const completion = document.querySelector('[data-complete]');
 const resume = document.querySelector('[data-resume]');
+const resumeDefault = resume && { href: resume.getAttribute('href'), label: resume.firstChild.textContent };
 const catalog = document.querySelector('[data-catalog]');
 const stageProgress = document.querySelector('[data-stage-progress]');
 const normalize = text => text.normalize('NFKC').toLowerCase();
@@ -134,6 +135,9 @@ function refreshResume() {
   if (typeof last === 'string' && /^course\/[a-z0-9-]+\/[a-z0-9-]+\.md$/.test(last)) {
     resume.href = `${base}/${last.replace(/\.md$/, '.html')}`;
     resume.firstChild.textContent = '继续上次阅读 ';
+  } else {
+    resume.setAttribute('href', resumeDefault.href);
+    resume.firstChild.textContent = resumeDefault.label;
   }
 }
 
