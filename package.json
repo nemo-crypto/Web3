@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npm run build -- --visit-counter && node --experimental-sqlite site/serve.mjs",
     "build": "node site/build.mjs",
-    "check": "node site/build.mjs --check && node --experimental-sqlite --test site/*.test.mjs"
+    "check": "node site/build.mjs --check && node --experimental-sqlite --test site/*.test.mjs",
+    "test": "node --experimental-sqlite --test site/*.test.mjs"
   },
   "engines": {
     "node": ">=22.12"
@@ -14,5 +15,8 @@
   "dependencies": {
     "markdown-it": "15.0.3",
     "mermaid": "12.3.0"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
   }
 }
